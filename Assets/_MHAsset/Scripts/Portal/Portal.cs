@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 
 namespace MH.Portal
@@ -18,6 +19,12 @@ namespace MH.Portal
         private Camera _portalCamera;
         private RenderTexture _viewTexture;
         List<PortalTraveller> _trackedTravellers = new();
+        
+        [Header ("Advanced Settings")]
+        public float nearClipOffset = 0.05f;
+        public float nearClipLimit = 0.2f;
+
+        [SerializeField] private int recursionLimit = 5;
         #endregion
 
         #region ---------------------- Untiy Methods --------------------
@@ -32,7 +39,7 @@ namespace MH.Portal
 
         private void Update()
         {
-            MoveCamAndRenderForLinkedPortal();
+            Render();
             ProtectScreenFromClipping();
         }
 
@@ -90,7 +97,7 @@ namespace MH.Portal
 
         // used to move the portal camera to the correct position and render the view from the linked portal
         // if the linked portal is not visible from the player camera, the screen of the portal will be disabled
-        public void MoveCamAndRenderForLinkedPortal()
+        public void Render()
         {
             if ( !VisibleFromCamera(linkedPortal.screen, playerCamera) ) 
             {
@@ -100,12 +107,26 @@ namespace MH.Portal
             screen.enabled = false;
             CheckToCreateViewTexture();
             
-            // make portal cam pos and rotation the same relative to this portal as player cam relative to linked portal
-            var m = transform.localToWorldMatrix * linkedPortal.transform.worldToLocalMatrix * playerCamera.transform.localToWorldMatrix;
-            _portalCamera.transform.SetPositionAndRotation(m.GetColumn(3), m.rotation);
+            Matrix4x4 localToWorldMatrix = playerCamera.transform.localToWorldMatrix;
+            Matrix4x4[] matrices = new Matrix4x4[recursionLimit];
+            for (int i=0; i < recursionLimit; i++)
+            {
+                localToWorldMatrix = transform.localToWorldMatrix * linkedPortal.transform.worldToLocalMatrix * localToWorldMatrix;
+                matrices[recursionLimit - i - 1] = localToWorldMatrix;
+            }
             
-            // render the portal camera
-            _portalCamera.Render();
+            // make portal cam pos and rotation the same relative to this portal as player cam relative to linked portal
+            // var m = transform.localToWorldMatrix * linkedPortal.transform.worldToLocalMatrix * playerCamera.transform.localToWorldMatrix;
+            // _portalCamera.transform.SetPositionAndRotation(m.GetColumn(3), m.rotation);
+            
+      
+            for (int i=0; i < recursionLimit; i++)
+            {
+                // move and rotate cam 
+                _portalCamera.transform.SetPositionAndRotation(matrices[i].GetColumn(3), matrices[i].rotation);
+                SetNearClipPlane(); // set near plane of cam to no see stuff which ahead portal
+                _portalCamera.Render(); // call render of portal camera,new layer will blend old layer
+            }
             
             screen.enabled = true;
         }
@@ -140,6 +161,30 @@ namespace MH.Portal
             Plane[] frustumPlanes = GeometryUtility.CalculateFrustumPlanes(camera); 
             return GeometryUtility.TestPlanesAABB(frustumPlanes, renderer.bounds);
         }
+        
+        // Use custom projection matrix to align portal camera's near clip plane with the surface of the portal
+        // Note that this affects precision of the depth buffer, which can cause issues with effects like screenspace AO
+        void SetNearClipPlane () {
+            // Learning resource:
+            // http://www.terathon.com/lengyel/Lengyel-Oblique.pdf
+            Transform clipPlane = transform;
+            int dot = System.Math.Sign (Vector3.Dot (clipPlane.forward, transform.position - _portalCamera.transform.position));
+
+            Vector3 camSpacePos = _portalCamera.worldToCameraMatrix.MultiplyPoint (clipPlane.position);
+            Vector3 camSpaceNormal = _portalCamera.worldToCameraMatrix.MultiplyVector (clipPlane.forward) * dot;
+            float camSpaceDst = -Vector3.Dot (camSpacePos, camSpaceNormal) + nearClipOffset;
+
+            // Don't use oblique clip plane if very close to portal as it seems this can cause some visual artifacts
+            if (Mathf.Abs (camSpaceDst) > nearClipLimit) {
+                Vector4 clipPlaneCameraSpace = new Vector4 (camSpaceNormal.x, camSpaceNormal.y, camSpaceNormal.z, camSpaceDst);
+
+                // Update projection based on new clip plane
+                // Calculate matrix with player cam so that player camera settings (fov, etc) are used
+                _portalCamera.projectionMatrix = playerCamera.CalculateObliqueMatrix (clipPlaneCameraSpace);
+            } else {
+                _portalCamera.projectionMatrix = playerCamera.projectionMatrix;
+            }
+        }
 
 
         #region ------ Teleportation------
@@ -172,6 +217,30 @@ namespace MH.Portal
         }
 
         #endregion
+
+
+        #region -------- Slice --------
+
+        void UpdateSliceParams(PortalTraveller traveller)
+        {
+            // calculate slice normal
+            int side  = SideOfPortal(traveller.transform.position);
+            Vector3 sliceNormal = transform.forward * -side;
+            Vector3 cloneSliceMormal = linkedPortal.transform.forward * side;
+            
+            // Calculate slice center
+            Vector3 slicePos = transform.position;
+            Vector3 cloneSlicePos = transform.position;
+            
+            // apply paramaters
+            
+        }
+
+        #endregion
+        
+        int SideOfPortal (Vector3 pos) {
+            return System.Math.Sign (Vector3.Dot (pos - transform.position, transform.forward));
+        }
 
         #endregion
 
