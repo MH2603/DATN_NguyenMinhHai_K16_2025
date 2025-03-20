@@ -168,7 +168,7 @@ namespace MH.Portal
             // screenT.localPosition = Vector3.forward * dstToNearClipPlaneCorner * (camFacingSameDirAsPortal ? 0.5f : -0.5f);
             
             screenT.localScale = new Vector3(dstToNearClipPlaneCorner, screenT.localScale.y, screenT.localScale.z);
-            screenT.localPosition = Vector3.right * dstToNearClipPlaneCorner * (camFacingSameDirAsPortal ? 0.5f : -0.5f);
+            screenT.localPosition = Vector3.right * dstToNearClipPlaneCorner * (camFacingSameDirAsPortal ? -0.5f : 0.5f);
         }
 
         #endregion
