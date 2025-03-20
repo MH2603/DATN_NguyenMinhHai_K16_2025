@@ -39,36 +39,21 @@ namespace MH.Portal
 
         private void Update()
         {
+            for (int i = 0; i < _trackedTravellers.Count; i++)
+            {
+                UpdateSliceParams(_trackedTravellers[i]);
+            }
+            
             Render();
             ProtectScreenFromClipping();
         }
 
         private void LateUpdate()
         {
-            for (int i=0; i<_trackedTravellers.Count; i++)
+            TryTeleportTravellers();
+            for (int i = 0; i < _trackedTravellers.Count; i++)
             {
-                PortalTraveller traveller = _trackedTravellers[i];
-                Transform travellerT = traveller.transform;
-                
-                Vector3 offsetFromPortal = travellerT.position - transform.position;
-                int portalSide = System.Math.Sign(Vector3.Dot(offsetFromPortal, transform.forward));
-                int portalSideOld = System.Math.Sign(Vector3.Dot(traveller.PreviousOffsetFromPortal, transform.forward));
-                
-                // Teleport the traveller if it has crossed from one side of the portal to the other
-                if (portalSide != portalSideOld)
-                {
-                    var m = linkedPortal.transform.localToWorldMatrix * transform.worldToLocalMatrix * travellerT.localToWorldMatrix;
-                    traveller.Teleport(transform, linkedPortal.transform, m.GetColumn(3), m.rotation);
-                    
-                    // Can not rely on OnTriggerEnter/Exit to be called next frame since it depends on when FixedUpdate runs
-                    linkedPortal.OnTravellerEnter(traveller);
-                    _trackedTravellers.RemoveAt(i);
-                    i--;
-                }
-                else
-                {
-                    traveller.PreviousOffsetFromPortal = offsetFromPortal;
-                }  
+                UpdateSliceParams(_trackedTravellers[i]);
             }
         }
 
@@ -216,30 +201,86 @@ namespace MH.Portal
             screenT.localPosition = Vector3.right * dstToNearClipPlaneCorner * (camFacingSameDirAsPortal ? -0.5f : 0.5f);
         }
 
+        void TryTeleportTravellers()
+        {
+            for (int i=0; i<_trackedTravellers.Count; i++)
+            {
+                PortalTraveller traveller = _trackedTravellers[i];
+                Transform travellerT = traveller.transform;
+                
+                Vector3 offsetFromPortal = travellerT.position - transform.position;
+                int portalSide = System.Math.Sign(Vector3.Dot(offsetFromPortal, transform.forward));
+                int portalSideOld = System.Math.Sign(Vector3.Dot(traveller.PreviousOffsetFromPortal, transform.forward));
+                
+                // Teleport the traveller if it has crossed from one side of the portal to the other
+                if (portalSide != portalSideOld)
+                {
+                    var m = linkedPortal.transform.localToWorldMatrix * transform.worldToLocalMatrix * travellerT.localToWorldMatrix;
+                    traveller.Teleport(transform, linkedPortal.transform, m.GetColumn(3), m.rotation);
+                    
+                    // Can not rely on OnTriggerEnter/Exit to be called next frame since it depends on when FixedUpdate runs
+                    linkedPortal.OnTravellerEnter(traveller);
+                    _trackedTravellers.RemoveAt(i);
+                    i--;
+                }
+                else
+                {
+                    traveller.PreviousOffsetFromPortal = offsetFromPortal;
+                }  
+            }
+        }
+
         #endregion
 
 
         #region -------- Slice --------
 
-        void UpdateSliceParams(PortalTraveller traveller)
-        {
-            // calculate slice normal
-            int side  = SideOfPortal(traveller.transform.position);
+        void UpdateSliceParams (PortalTraveller traveller) {
+            // Calculate slice normal
+            int side = SideOfPortal (traveller.transform.position);
             Vector3 sliceNormal = transform.forward * -side;
-            Vector3 cloneSliceMormal = linkedPortal.transform.forward * side;
-            
-            // Calculate slice center
+            Vector3 cloneSliceNormal = linkedPortal.transform.forward * side;
+
+            // Calculate slice centre
             Vector3 slicePos = transform.position;
-            Vector3 cloneSlicePos = transform.position;
-            
-            // apply paramaters
-            
+            Vector3 cloneSlicePos = linkedPortal.transform.position;
+
+            // Adjust slice offset so that when player standing on other side of portal to the object, the slice doesn't clip through
+            float sliceOffsetDst = 0;
+            float cloneSliceOffsetDst = 0;
+            float screenThickness = screen.transform.localScale.z;
+
+            bool playerSameSideAsTraveller = SameSideOfPortal (playerCamera.transform.position, traveller.transform.position);
+            if (!playerSameSideAsTraveller) {
+                sliceOffsetDst = -screenThickness;
+            }
+            bool playerSameSideAsCloneAppearing = side != linkedPortal.SideOfPortal (playerCamera.transform.position);
+            if (!playerSameSideAsCloneAppearing) {
+                cloneSliceOffsetDst = -screenThickness;
+            }
+
+            // Apply parameters
+            for (int i = 0; i < traveller.originalMaterials.Length; i++) {
+                traveller.originalMaterials[i].SetVector ("_SliceCenter", slicePos);
+                traveller.originalMaterials[i].SetVector ("_SliceNormal", sliceNormal);
+                traveller.originalMaterials[i].SetFloat ("_SliceOffsetDst", sliceOffsetDst);
+
+                traveller.cloneMaterials[i].SetVector ("_SliceCentre", cloneSlicePos);
+                traveller.cloneMaterials[i].SetVector ("_SliceNormal", cloneSliceNormal);
+                traveller.cloneMaterials[i].SetFloat ("_SliceOffsetDst", cloneSliceOffsetDst);
+
+            }
+
         }
 
         #endregion
         
         int SideOfPortal (Vector3 pos) {
             return System.Math.Sign (Vector3.Dot (pos - transform.position, transform.forward));
+        }
+        
+        bool SameSideOfPortal (Vector3 posA, Vector3 posB) {
+            return SideOfPortal (posA) == SideOfPortal (posB);
         }
 
         #endregion

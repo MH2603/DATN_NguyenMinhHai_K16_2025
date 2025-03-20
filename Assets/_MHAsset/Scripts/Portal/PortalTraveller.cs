@@ -35,16 +35,16 @@ namespace MH.Portal
         graphicsClone.SetActive (false);
         // Disable slicing
         for (int i = 0; i < originalMaterials.Length; i++) {
-            originalMaterials[i].SetVector ("sliceNormal", Vector3.zero);
+            originalMaterials[i].SetVector ("_SliceNormal", Vector3.zero);
         }
     }
 
     public void SetSliceOffsetDst (float dst, bool clone) {
         for (int i = 0; i < originalMaterials.Length; i++) {
             if (clone) {
-                cloneMaterials[i].SetFloat ("sliceOffsetDst", dst);
+                cloneMaterials[i].SetFloat ("_SliceOffsetDst", dst);
             } else {
-                originalMaterials[i].SetFloat ("sliceOffsetDst", dst);
+                originalMaterials[i].SetFloat ("_SliceOffsetDst", dst);
             }
 
         }
