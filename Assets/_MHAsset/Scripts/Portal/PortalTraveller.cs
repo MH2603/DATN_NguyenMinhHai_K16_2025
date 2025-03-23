@@ -21,7 +21,6 @@ namespace MH.Portal
     public virtual void EnterPortalThreshold () {
         if (graphicsClone == null) {
             graphicsClone = Instantiate (graphicsObject);
-            graphicsClone.transform.parent = graphicsObject.transform.parent;
             graphicsClone.transform.localScale = graphicsObject.transform.localScale;
             originalMaterials = GetMaterials (graphicsObject);
             cloneMaterials = GetMaterials (graphicsClone);
