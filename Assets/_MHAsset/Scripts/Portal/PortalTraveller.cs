@@ -6,58 +6,74 @@ namespace MH.Portal
     public class PortalTraveller : MonoBehaviour
     {
         public GameObject graphicsObject;
-    public GameObject graphicsClone { get; set; }
-    public Vector3 PreviousOffsetFromPortal { get; set; }
+        public bool spawnCloneSameParent;
+        public GameObject graphicsClone { get; set; }
+        public Vector3 PreviousOffsetFromPortal { get; set; }
 
-    public Material[] originalMaterials { get; set; }
-    public Material[] cloneMaterials { get; set; }
+        public Material[] originalMaterials { get; set; }
+        public Material[] cloneMaterials { get; set; }
 
-    public virtual void Teleport (Transform fromPortal, Transform toPortal, Vector3 pos, Quaternion rot) {
-        transform.position = pos;
-        transform.rotation = rot;
-    }
-
-    // Called when first touches portal
-    public virtual void EnterPortalThreshold () {
-        if (graphicsClone == null) {
-            graphicsClone = Instantiate (graphicsObject);
-            graphicsClone.transform.localScale = graphicsObject.transform.localScale;
-            originalMaterials = GetMaterials (graphicsObject);
-            cloneMaterials = GetMaterials (graphicsClone);
-        } else {
-            graphicsClone.SetActive (true);
+        public virtual void Teleport (Transform fromPortal, Transform toPortal, Vector3 pos, Quaternion rot) {
+            transform.position = pos;
+            transform.rotation = rot;
         }
-    }
 
-    // Called once no longer touching portal (excluding when teleporting)
-    public virtual void ExitPortalThreshold () {
-        graphicsClone.SetActive (false);
-        // Disable slicing
-        for (int i = 0; i < originalMaterials.Length; i++) {
-            originalMaterials[i].SetVector ("_SliceNormal", Vector3.zero);
-        }
-    }
+        // Called when first touches portal
+        public virtual void EnterPortalThreshold () {
+            if (graphicsClone == null)
+            {
+                if (spawnCloneSameParent)
+                {
+                    graphicsClone = Instantiate(graphicsObject, transform.parent);
+                    // graphicsClone.transform.localScale = graphicsObject.transform.localScale;
+                }
+                else
+                {
+                    graphicsClone = Instantiate(graphicsObject);
+                    // graphicsClone.transform.position = graphicsObject.transform.position;
+                }
 
-    public void SetSliceOffsetDst (float dst, bool clone) {
-        for (int i = 0; i < originalMaterials.Length; i++) {
-            if (clone) {
-                cloneMaterials[i].SetFloat ("_SliceOffsetDst", dst);
+                if (graphicsClone.TryGetComponent(out RbPortalTraveller traveller))
+                {
+                    Destroy(traveller); 
+                }
+                
+                originalMaterials = GetMaterials (graphicsObject);
+                cloneMaterials = GetMaterials (graphicsClone);
             } else {
-                originalMaterials[i].SetFloat ("_SliceOffsetDst", dst);
-            }
-
-        }
-    }
-
-    Material[] GetMaterials (GameObject g) {
-        var renderers = g.GetComponentsInChildren<MeshRenderer> ();
-        var matList = new List<Material> ();
-        foreach (var renderer in renderers) {
-            foreach (var mat in renderer.materials) {
-                matList.Add (mat);
+                graphicsClone.SetActive (true);
             }
         }
-        return matList.ToArray ();
-    }
+
+        // Called once no longer touching portal (excluding when teleporting)
+        public virtual void ExitPortalThreshold () {
+            graphicsClone.SetActive (false);
+            // Disable slicing
+            for (int i = 0; i < originalMaterials.Length; i++) {
+                originalMaterials[i].SetVector ("_SliceNormal", Vector3.zero);
+            }
+        }
+
+        public void SetSliceOffsetDst (float dst, bool clone) {
+            for (int i = 0; i < originalMaterials.Length; i++) {
+                if (clone) {
+                    cloneMaterials[i].SetFloat ("_SliceOffsetDst", dst);
+                } else {
+                    originalMaterials[i].SetFloat ("_SliceOffsetDst", dst);
+                }
+
+            }
+        }
+
+        Material[] GetMaterials (GameObject g) {
+            var renderers = g.GetComponentsInChildren<MeshRenderer> ();
+            var matList = new List<Material> ();
+            foreach (var renderer in renderers) {
+                foreach (var mat in renderer.materials) {
+                    matList.Add (mat);
+                }
+            }
+            return matList.ToArray ();
+        }
     }
 }

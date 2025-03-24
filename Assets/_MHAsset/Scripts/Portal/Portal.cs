@@ -49,8 +49,9 @@ namespace MH.Portal
 
         private void LateUpdate()
         {
-            UpdateParamsForAllTravellers(); // update params for traveller's shader  (use for slice process)
+            
             ProtectScreenFromClipping(playerCamera.transform.position); // move screen with a small dst to avoid playerCam collision with screen.
+            UpdateParamsForAllTravellers(); // update params for traveller's shader  (use for slice process)
         }
 
         private void OnTriggerEnter(Collider other)
