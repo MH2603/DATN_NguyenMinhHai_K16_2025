@@ -42,16 +42,16 @@ namespace MH.Portal
         private void Update()
         {
             HandleTravellers(); // update pos, rot of traveller's clone & try teleport traveller
-            UpdateParamsForAllTravellers(); // update params for traveller's shader (use for slice process)
+            // UpdateParamsForAllTravellers(); // update params for traveller's shader (use for slice process)
             
             Render(); // move, rotate portal cam -> call cam.Render() ->  update image on linked portal screen
+            
         }
 
         private void LateUpdate()
         {
-            
-            ProtectScreenFromClipping(playerCamera.transform.position); // move screen with a small dst to avoid playerCam collision with screen.
             UpdateParamsForAllTravellers(); // update params for traveller's shader  (use for slice process)
+            ProtectScreenFromClipping(playerCamera.transform.position); // move screen with a small dst to avoid playerCam collision with screen.
         }
 
         private void OnTriggerEnter(Collider other)
@@ -379,7 +379,8 @@ namespace MH.Portal
             // Adjust slice offset so that when player standing on other side of portal to the object, the slice doesn't clip through
             float sliceOffsetDst = 0;
             float cloneSliceOffsetDst = 0;
-            float screenThickness = screen.transform.localScale.z;
+            // float screenThickness = screen.transform.localScale.z;
+            float screenThickness = screen.transform.localScale.x;
 
             bool playerSameSideAsTraveller = SameSideOfPortal (playerCamera.transform.position, traveller.transform.position);
             if (!playerSameSideAsTraveller) {
