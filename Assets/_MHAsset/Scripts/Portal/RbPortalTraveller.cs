@@ -16,7 +16,7 @@ namespace MH.Portal
         public override void Teleport (Transform fromPortal, Transform toPortal, Vector3 pos, Quaternion rot) {
             base.Teleport(fromPortal, toPortal, pos, rot);
             
-            _rb.linearVelocity = toPortal.TransformVector (fromPortal.InverseTransformVector (_rb.linearVelocity));
+            _rb.velocity = toPortal.TransformVector (fromPortal.InverseTransformVector (_rb.velocity));
             _rb.angularVelocity = toPortal.TransformVector (fromPortal.InverseTransformVector (_rb.angularVelocity));
             
             // _rb.linearVelocity = toPortal.TransformVector (fromPortal.TransformVector(_rb.linearVelocity));
