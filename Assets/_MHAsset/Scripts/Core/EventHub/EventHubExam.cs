@@ -4,7 +4,7 @@ using UnityEngine;
 namespace MH.Core.EventHub
 {
     
-    public struct TextEvent : IEvent
+    public struct TextEvent : IEventContext
     {
         public string text;
     }
@@ -35,7 +35,7 @@ namespace MH.Core.EventHub
             Debug.Log("Recieved event!");
         }
 
-        private void HandleEvent2(IEvent eventData)
+        private void HandleEvent2(IEventContext eventData)
         {
             Debug.Log("Recieved 02 event!");
         }

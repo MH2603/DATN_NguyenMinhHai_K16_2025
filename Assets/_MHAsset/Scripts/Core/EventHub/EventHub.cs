@@ -15,7 +15,7 @@ namespace  MH.Core.EventHub
         }
 
         // Add a listener with any type of callback signature
-        public void AddListener<T>(Action<T> callBack) where T : IEvent
+        public void AddListener<T>(Action<T> callBack) where T : IEventContext
         {
             if (callBack == null) return;
 
@@ -41,7 +41,7 @@ namespace  MH.Core.EventHub
         }
 
         // Remove a listener with any type of callback signature
-        public void RemoveListener<T>(Action<T> callBack) where T : IEvent
+        public void RemoveListener<T>(Action<T> callBack) where T : IEventContext
         {
             if (callBack == null) return;
 
@@ -73,7 +73,7 @@ namespace  MH.Core.EventHub
         }*/
 
         // Dispatch event with no data
-        public void DispatchEvent<T>(T eventData) where T : IEvent
+        public void DispatchEvent<T>(T eventData) where T : IEventContext
         {
             if (_eventListeners.TryGetValue(typeof(T), out var listeners))
             {
