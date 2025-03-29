@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -76,42 +76,6 @@ namespace MH.Portal
         #endregion
 
         #region -------------------- Public Methods ------------------
-
-        // used to move the portal camera to the correct position and render the view from the linked portal
-        // if the linked portal is not visible from the player camera, the screen of the portal will be disabled
-        /*public void Render()
-        {
-            if ( !VisibleFromCamera(linkedPortal.screen, playerCamera) ) 
-            {
-                return;
-            }
-            
-            screen.enabled = false;
-            CheckToCreateViewTexture();
-            
-            Matrix4x4 localToWorldMatrix = playerCamera.transform.localToWorldMatrix;
-            Matrix4x4[] matrices = new Matrix4x4[recursionLimit];
-            for (int i=0; i < recursionLimit; i++)
-            {
-                localToWorldMatrix = transform.localToWorldMatrix * linkedPortal.transform.worldToLocalMatrix * localToWorldMatrix;
-                matrices[recursionLimit - i - 1] = localToWorldMatrix;
-            }
-            
-            // make portal cam pos and rotation the same relative to this portal as player cam relative to linked portal
-            // var m = transform.localToWorldMatrix * linkedPortal.transform.worldToLocalMatrix * playerCamera.transform.localToWorldMatrix;
-            // _portalCamera.transform.SetPositionAndRotation(m.GetColumn(3), m.rotation);
-            
-      
-            for (int i=0; i < recursionLimit; i++)
-            {
-                // move and rotate cam 
-                _portalCamera.transform.SetPositionAndRotation(matrices[i].GetColumn(3), matrices[i].rotation);
-                SetNearClipPlane(); // set near plane of cam to no see stuff which ahead portal
-                _portalCamera.Render(); // call render of portal camera,new layer will blend old layer
-            }
-            
-            screen.enabled = true;
-        }*/
          
         // Manually render the camera attached to this portal
         // Called after PrePortalRender, and before PostPortalRender
@@ -164,7 +128,32 @@ namespace MH.Portal
             // Unhide objects hidden at start of render
             screen.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
         }
-        
+
+        public Vector3 GetRelativePortalPosition(Vector3 pos)
+        {
+            // Get the Transform of portal A (this object's transform)
+            Transform portalA = transform;
+
+            // Get the Transform of portal B (the linked portal's transform)
+            Transform portalB = linkedPortal.transform;
+
+            // Calculate the relative position of the point 'pos' with respect to portal A in local space
+            Vector3 localPos = portalA.InverseTransformPoint(pos);
+
+            // Convert that local position into world space relative to portal B
+            Vector3 worldPos = portalB.TransformPoint(localPos);
+
+            // Calculate the rotational difference between the two portals
+            Quaternion rotationDifference = portalB.rotation * Quaternion.Inverse(portalA.rotation);
+
+            // Rotate the resulting position based on the rotational difference between the two portals
+            Vector3 offset = worldPos - portalB.position;
+            Vector3 rotatedOffset = rotationDifference * offset;
+
+            // Return the final position after applying the offset to portal B's position
+            return portalB.position + rotatedOffset;
+        }
+
 
         #endregion
 
@@ -189,13 +178,6 @@ namespace MH.Portal
             
         }
  
-        // used to determine if a given renderer is visible from a specified camera.
-        // This method is useful for optimizing rendering by checking if an object is within the camera's view frustum.
-        bool VisibleFromCamera(Renderer renderer, Camera camera)
-        {
-            Plane[] frustumPlanes = GeometryUtility.CalculateFrustumPlanes(camera); 
-            return GeometryUtility.TestPlanesAABB(frustumPlanes, renderer.bounds);
-        }
         
         // Use custom projection matrix to align portal camera's near clip plane with the surface of the portal
         // Note that this affects precision of the depth buffer, which can cause issues with effects like screenspace AO

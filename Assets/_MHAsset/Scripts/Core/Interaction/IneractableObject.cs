@@ -12,7 +12,6 @@ namespace MH.Interaction
         public UnityEvent OnInteraction;
         
         private bool isInteractable = true;       // Controls whether this can be interacted with
-        private bool isInteracting = false;       // Tracks if the object is currently being interacted with
 
         
         // Called when the object becomes a potential target (e.g., raycast detects it)
@@ -32,9 +31,6 @@ namespace MH.Interaction
         {
             if (!isInteractable) return;
 
-            // Toggle interaction state
-            isInteracting = !isInteracting;
-
             OnInteraction?.Invoke();
         }
 
@@ -42,7 +38,7 @@ namespace MH.Interaction
         public bool CanInteract(IInteractor interactor)
         {
             // Example condition: Can interact if not already being held by another interactor
-            return isInteractable && (!isInteracting || interactor.InteractableTarget == this);
+            return isInteractable;
         }
     }
 }

@@ -6,9 +6,11 @@ public class PickUpInteractor : MonoBehaviour, IInteractor
     [SerializeField] private float pickupDistance = 2f;    // Distance in front where the object is held
     [SerializeField] private float maxPickupRange = 5f;    // Maximum distance for raycast
     [SerializeField] private float holdForce = 1000f;      // Force to keep the object in place
+    [SerializeField] private float holdSpeed = 10f;
+    [SerializeField] private float holdSmooth = 10f;
     [SerializeField] private LayerMask pickupLayer;        // Layers that can be picked up
 
-    private IInteractable currentInteractable;             // Currently held object
+    private IInteractable holdingInteractable;             // Currently held object
     private IInteractable detectedInteractable;            // Interactable detected by raycast
     private Rigidbody heldRigidbody;                       // Rigidbody of the held object
     private bool isHolding = false;                        // Flag for holding state
@@ -36,12 +38,14 @@ public class PickUpInteractor : MonoBehaviour, IInteractor
         // Perform interaction when E is pressed
         if (Input.GetKeyDown(KeyCode.E))
         {
-            PerformInteraction(detectedInteractable);
+            PerformInteraction();
         }
     }
 
-    private void DetectInteractable()
+    protected  void DetectInteractable()
     {
+        if (isHolding) return;
+
         Ray ray = mainCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
         if (Physics.Raycast(ray, out RaycastHit hit, maxPickupRange, pickupLayer))
         {
@@ -60,9 +64,9 @@ public class PickUpInteractor : MonoBehaviour, IInteractor
     }
 
     // Implementation of PerformInteraction from IInteractor
-    public void PerformInteraction(IInteractable interactable)
+    public void PerformInteraction()
     {
-        if (interactable == null || !interactable.CanInteract(this)) return;
+        if (detectedInteractable == null || !detectedInteractable.CanInteract(this)) return;
 
         // If holding something, drop it
         if (isHolding)
@@ -72,20 +76,20 @@ public class PickUpInteractor : MonoBehaviour, IInteractor
         // If not holding, pick up the detected item
         else
         {
-            GameObject targetObject = (interactable as MonoBehaviour)?.gameObject;
+            GameObject targetObject = (detectedInteractable as MonoBehaviour)?.gameObject;
             if (targetObject != null)
             {
-                PickUpItem(interactable, targetObject);
+                PickUpItem(detectedInteractable, targetObject);
             }
         }
     }
 
     private void PickUpItem(IInteractable interactable, GameObject target)
     {
-        currentInteractable = interactable;
+        holdingInteractable = interactable;
         
         // Perform the interaction
-        currentInteractable.Interact(this);
+        holdingInteractable.Interact(this);
 
         // Get and configure the Rigidbody
         if (target.TryGetComponent(out heldRigidbody))
@@ -101,7 +105,7 @@ public class PickUpInteractor : MonoBehaviour, IInteractor
     {
         // Calculate the target position in front of the interactor
         Vector3 holdPosition = mainCamera.transform.position + mainCamera.transform.forward * pickupDistance;
-        
+
         // Calculate the force needed to move the object to the hold position
         Vector3 directionToHold = holdPosition - heldRigidbody.position;
         Vector3 force = directionToHold * holdForce * Time.deltaTime;
@@ -115,10 +119,10 @@ public class PickUpInteractor : MonoBehaviour, IInteractor
 
     private void DropItem()
     {
-        if (currentInteractable == null || heldRigidbody == null) return;
+        if (holdingInteractable == null || heldRigidbody == null) return;
 
         // Notify the interactable that interaction has ended
-        currentInteractable.Interact(this);
+        holdingInteractable.Interact(this);
 
         // Restore physics properties
         heldRigidbody.useGravity = true;
@@ -126,7 +130,7 @@ public class PickUpInteractor : MonoBehaviour, IInteractor
         heldRigidbody.angularDrag = 0.05f;
 
         // Clear references
-        currentInteractable = null;
+        holdingInteractable = null;
         heldRigidbody = null;
         isHolding = false;
     }

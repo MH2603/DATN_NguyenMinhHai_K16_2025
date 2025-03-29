@@ -4,15 +4,31 @@ namespace MH.Interaction
 {
     public abstract class IntertactorBase : MonoBehaviour, IInteractor
     {
-        public IInteractable InteractableTarget { get; }
-        public virtual void PerformInteraction(IInteractable interactable)
+        #region ------------ Fields -------------
+
+        protected IInteractable detectedInteractable; 
+
+        #endregion
+
+
+        #region -------------- Unity Methods ----------------- 
+
+        #endregion
+
+        #region ---------------- Public Methods ----------------
+
+        public virtual void PerformInteraction()
         {
-            if (InteractableTarget != null)
-            {
-                InteractableTarget.Interact(this);
-            }
-        }
+            if (detectedInteractable == null || !detectedInteractable.CanInteract(this)) return;
         
+            detectedInteractable.Interact(this);
+        }
+
+        #endregion
+
+        protected abstract void DetectInteractable();
+       
+
     }
     
     
