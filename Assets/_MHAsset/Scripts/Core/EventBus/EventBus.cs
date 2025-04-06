@@ -2,9 +2,8 @@ using UnityEngine.Events;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-namespace  MH.Core
+namespace  MH.Core.EventBus
 {
 
 

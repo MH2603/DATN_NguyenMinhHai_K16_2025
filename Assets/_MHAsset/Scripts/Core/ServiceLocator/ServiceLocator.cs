@@ -3,7 +3,7 @@ using System;
 using UnityEditor;
 using UnityEngine;
 
-namespace MH
+namespace MH.Core
 {
     public static class ServiceLocator
     {
