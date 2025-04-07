@@ -2,11 +2,10 @@ using UnityEngine.Events;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
-namespace  MH.Core.EventBus
+namespace  MH.EventBus
 {
-
-
     public interface IEventContext
     {
         // This can be left empty as a marker interface
@@ -51,7 +50,29 @@ namespace  MH.Core.EventBus
         #endregion
 
         #region --------- Public Methods -------
+#if UNITY_EDITOR
+        public EventBus()
+        {
+            // Subscribe to play mode state change event
+            EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
+        }
 
+        /// <summary>
+        /// Called whenever the Unity Editor's play mode changes.
+        /// </summary>
+        /// <param name="state">The new play mode state.</param>
+        private void OnPlayModeStateChanged(PlayModeStateChange state)
+        {
+            // Check if we are exiting play mode
+            if (state == PlayModeStateChange.ExitingPlayMode)
+            {
+                // 
+                Debug.Log(" [Log] Event Bus Map was clear ");
+                _eventMap.Clear();
+            }
+        }
+
+#endif
         /// <summary>
         /// Registers a callback for a specific event type
         /// </summary>
@@ -128,6 +149,6 @@ namespace  MH.Core.EventBus
             _eventMap.Clear();
         }
 
-        #endregion
+#endregion
     }
 }

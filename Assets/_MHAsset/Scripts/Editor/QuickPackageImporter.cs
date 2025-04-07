@@ -8,7 +8,7 @@ public class QuickPackageImporter : EditorWindow
     private AddRequest currentRequest;
     private string statusMessage = "";
 
-    [MenuItem("Window/Quick Package Importer")]
+    [MenuItem("MH Tool/Quick Package Importer")]
     public static void ShowWindow()
     {
         GetWindow<QuickPackageImporter>("Quick Package Importer");
@@ -35,7 +35,7 @@ public class QuickPackageImporter : EditorWindow
         // Thêm nút cho package từ Git URL (ví dụ)
         if (GUILayout.Button("Import UniTask"))
         {
-            ImportPackage(" https://github.com/Cysharp/UniTask", "Installing UniTask Git Package...");
+            ImportPackage("https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask", "Installing UniTask Git Package...");
         }
 
         // Hiển thị trạng thái

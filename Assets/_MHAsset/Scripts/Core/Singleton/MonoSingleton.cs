@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace MH.Core.Singleton
+namespace MH.Singleton
 {
     /// <summary>
     /// Base class for creating singleton MonoBehaviour classes.

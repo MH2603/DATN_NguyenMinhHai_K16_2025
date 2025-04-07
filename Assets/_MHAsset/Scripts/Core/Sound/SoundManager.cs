@@ -2,13 +2,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
-namespace MH.Core.Sound
+namespace MH.Sound
 {
+    public interface ISoundManager
+    {
+        SoundBuilder CreateSoundBuilder();
+        void StopAll();
+    }
+
     /// <summary>
     /// Manages the audio system by using Object Pooling for better performance and memory management.
     /// This class supports frequent and one-time sound emitters with a max sound instance limit.
     /// </summary>
-    public class SoundManager : MonoBehaviour
+    public class SoundManager : MonoBehaviour, ISoundManager
     {
         #region ------------ Inspectors ------------
 

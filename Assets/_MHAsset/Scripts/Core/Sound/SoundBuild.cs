@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace  MH.Core.Sound
+namespace MH.Sound
 {
     /// <summary>
     /// The SoundBuilder class follows the Builder design pattern to construct and play sound emitters with optional configurations.

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Pool;
 using Random = UnityEngine.Random;
 
-namespace MH.Core.Sound
+namespace MH.Sound
 {
     
 

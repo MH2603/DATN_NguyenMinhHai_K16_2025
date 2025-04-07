@@ -1,8 +1,6 @@
-using System;
 using UnityEngine;
-using UnityEngine.Serialization;
 
-namespace  MH.Core.Sound
+namespace MH.Sound
 {
     public class SoundExam : MonoBehaviour
     {

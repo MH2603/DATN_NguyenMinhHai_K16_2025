@@ -13,42 +13,45 @@ namespace MH
     }
 
     // A generic State implementation that uses delegates for behavior
-    public class State<T> : IState where T : Enum
+    public abstract class State<T> : IState where T : Enum
     {
         // Delegates that hold the logic for each state phase
-        private readonly Action _onEnter;
-        private readonly Action _onUpdate;
-        private readonly Action _onExit;
+        //private readonly Action _onEnter;
+        //private readonly Action _onUpdate;
+        //private readonly Action _onExit;
 
         // Constructor assigns the passed delegates, falling back to empty methods if null
-        public State(Action onEnter, Action onUpdate, Action onExit)
+        public State()
         {
-            _onEnter = onEnter ?? (() => { });  // Use no-op if null
-            _onUpdate = onUpdate ?? (() => { });
-            _onExit = onExit ?? (() => { });
+            //_onEnter = onEnter ?? (() => { });  // Use no-op if null
+            //_onUpdate = onUpdate ?? (() => { });
+            //_onExit = onExit ?? (() => { });
         }
 
         // Executes the associated enter logic
-        public void OnEnter() => _onEnter();
+        public abstract void OnEnter();
+
 
         // Executes the associated update logic
-        public void OnUpdate() => _onUpdate();
+        public abstract void OnUpdate();
+
 
         // Executes the associated exit logic
-        public void OnExit() => _onExit();
+        public abstract void OnExit();
+
     }
 
     // A generic State Machine that manages transitions between states
     public class StateMachine<T> where T : Enum
     {
         // Dictionary mapping enum state keys to their corresponding IState instances
-        private readonly Dictionary<T, IState> _states = new();
+        protected readonly Dictionary<T, IState> _states = new();
 
         // Currently active state instance
-        private IState _currentState;
+        protected IState _currentState;
 
         // The enum key of the current state
-        private T _currentKey;
+        protected T _currentKey;
 
         // Public getter to know what state key is currently active
         public T CurrentKey => _currentKey;
@@ -70,7 +73,7 @@ namespace MH
         /// Handles exiting the old state and entering the new one.
         /// Logs a warning if the key is not registered.
         /// </summary>
-        public void ChangeState(T key)
+        public virtual void ChangeState(T key)
         {
             if (_states.TryGetValue(key, out var newState))
             {

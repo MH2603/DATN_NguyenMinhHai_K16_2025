@@ -1,49 +1,139 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace MH.Core.UISystem
+
+namespace MH.UISystem
 {
-    /// <summary>
-    /// The base class for all UI layers in the application.
-    /// </summary>
-    public abstract class UILayer : MonoBehaviour
-    {
-        /// <summary>
-        /// Sets the active state of the UI layer.
-        /// </summary>
-        /// <param name="active">The active state to set.</param>
-        /// <returns>A <see cref="UniTask"/> representing the asynchronous operation.</returns>
-        public virtual UniTask SetActiveAsync(bool active)
-        {
-            gameObject.SetActive(active);
-            return OnSetActive(active);
-        }
-
-        /// <summary>
-        /// Override this method to perform additional operations when the active state of the UI layer is set.
-        /// </summary>
-        /// <param name="active">The active state to set.</param>
-        protected virtual UniTask OnSetActive(bool active)
-        {
-            return UniTask.CompletedTask;
-        }
-    }
-
 
     /// <summary>
     /// The base class for all UI layers in the application.
     /// We're using CRTP to allow for easy access to the main instance of the layer.
     /// </summary>
-    public abstract class UILayer<T> : UILayer where T : UILayer<T>
+    public abstract class UILayer : MonoBehaviour
     {
+        #region ------------- Fields -------------
+
+        [SerializeField] private UIView[] _viewPrefabs;
+
+        protected readonly Dictionary<Type, UIView> _viewRuntimeMap = new();
+        protected readonly Dictionary<Type, UIView> _viewPrefabMap = new();
+
+        public UIView CurrentView { get; protected set; }
+
+        #endregion
+
+
+        #region ------------ Unity Methods ------------
+
+
+
+        #endregion
+
+        #region ----------- Public Methods --------------
+
+        public virtual void Initialized()
+        {
+            InitializeViewInstances();
+        }
+
+        #endregion
+
+        #region ------------- protected Methods ----------------
+
+        protected void InitializeViewInstances()
+        {
+            
+            foreach (var viewPrefab in _viewPrefabs)
+            {
+                _viewPrefabMap.Add(viewPrefab.GetType(), viewPrefab);
+                GetOrCreateContextInstance(viewPrefab);
+            }
+        }
+
+        protected bool IsCurrentViewBusy()
+        {
+            return CurrentView != null &&
+                   (CurrentView.EVisibleState == EVisibleState.Appearing ||
+                    CurrentView.EVisibleState == EVisibleState.Disappearing);
+        }
+
+        /// <summary>
+        /// Tries to get an instance of the specified UI context type.
+        /// </summary>
+        /// <typeparam name="TView">The type of the UI context.</typeparam>
+        /// <param name="contextInstance">The instance of the UI context.</param>
+        /// <returns><c>true</c> if the instance is found or created successfully; otherwise, <c>false</c>.</returns>
+        protected bool TryGetContextInstance<TView>(out TView contextInstance) where TView : UIView
+        {
+            contextInstance = null;
+            if (!_viewPrefabMap.TryGetValue(typeof(TView), out var context))
+            {
+                return false;
+            }
+
+            if (!_viewRuntimeMap.TryGetValue(typeof(TView), out var instance))
+            {
+                instance = GetOrCreateContextInstance(context);
+            }
+
+            contextInstance = instance as TView;
+            return true;
+        }
+
+        protected TView GetOrCreateContextInstance<TView>(TView context) where TView : UIView
+        {
+            if (!_viewRuntimeMap.TryGetValue(typeof(TView), out var contextInstance))
+            {
+                context.gameObject.SetActive(false);
+                contextInstance = Instantiate(context, transform);
+                context.gameObject.SetActive(true);
+                _viewRuntimeMap.Add(context.GetType(), contextInstance);
+            }
+
+            return contextInstance as TView;
+        }
+
+        protected void SetupViewInstance<TView, TViewModel>(
+            TView viewInstance,
+            TViewModel viewModel
+            )
+            where TView : UIView<TViewModel>
+            where TViewModel : UIViewModel
+        {
+            //viewInstance.OnPreAppear.Subscribe(_ => onPreInitialize?.Invoke(viewInstance)).AddTo(viewInstance);
+
+            if (viewModel != null)
+            {
+                viewInstance.SetViewModel(viewModel);
+            }
+
+            //viewInstance.OnPostAppear.Subscribe(_ => onPostInitialize?.Invoke(viewInstance)).AddTo(viewInstance); 
+
+            viewInstance.UILayer = this;
+            CurrentView = viewInstance;
+        }
+
+        #endregion
+    }
+
+    public class UILayer<T> : UILayer where T : UILayer<T>
+    {
+        /// <summary>
+        /// Singleton instance of the UI Layer.
+        /// </summary>
         public static T Main
         {
             get
             {
-                T main = UIManager.Instance.GetMain<T>();
+                T main = UIManager.Instance.GetLayer<T>();
                 if (main) return main;
                 return null;
             }
         }
+
+
     }
+
 }

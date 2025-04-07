@@ -1,73 +1,41 @@
-﻿using MH.Core.Singleton;
+﻿using MH.Singleton;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MH.Core.UISystem
+namespace MH.UISystem
 {
-    public sealed class UIManager : MonoSingleton<UIManager>
+    public class UIManager : MonoSingleton<UIManager>
     {
-        [SerializeField] private List<UILayer> _layers = new List<UILayer>();
+        #region ------------- Fields ----------------
 
-        private readonly Dictionary<Type, UILayer> _cachedLayers = new Dictionary<Type, UILayer>();
+        private readonly Dictionary<Type, UILayer> _layerMap = new Dictionary<Type, UILayer>();
+        #endregion
+
+        #region ----------- Unity Methods -----------
 
         protected override void Awake()
         {
+            base.Awake();
             CacheUILayers();
         }
 
+        #endregion
 
-        /// <summary>
-        /// Retrieve the main instance of a specific UILayer.
-        /// </summary>
-        /// <typeparam name="T">The specific UILayer type.</typeparam>
-        /// <returns>The main instance of the specified UILayer type.</returns>
-        public T GetMain<T>() where T : UILayer<T>
+        #region ----------------- Public Methods -----------------
+
+        public TLayer GetLayer<TLayer>() where TLayer : UILayer
         {
-            var requestedType = typeof(T);
-            if (_cachedLayers.TryGetValue(requestedType, out UILayer layer))
+            if (_layerMap.TryGetValue(typeof(TLayer), out var layer))
             {
-                return layer as T;
+                return layer as TLayer;
             }
 
-            Debug.LogError($"UI layer of type {requestedType} not found.");
+            Debug.LogError($" [Bug UIManager] Not found layer with type == {typeof(TLayer)}");
             return null;
         }
 
-        /// <summary>
-        /// Register a UILayer instance in the UIManager.
-        /// </summary>
-        /// <typeparam name="T">The specific UILayer type.</typeparam>
-        /// <param name="layer">The instance of the UILayer to be registered.</param>
-        public void RegisterLayer<T>(T layer) where T : UILayer<T>
-        {
-            var layerType = typeof(T);
-            if (_cachedLayers.TryAdd(layerType, layer))
-            {
-                _layers.Add(layer);
-            }
-            else
-            {
-                Debug.LogError($"UI layer of type {layerType} already registered.");
-            }
-        }
-
-
-        /// <summary>
-        /// Sets the active state of a specific UILayer asynchronously.
-        /// </summary>
-        /// <typeparam name="T">The specific UILayer type.</typeparam>
-        /// <param name="active">True to activate the layer, false to deactivate it.</param>
-        /// <returns>A UniTask representing the asynchronous operation.</returns>
-        public async UniTask SetActiveLayerAsync<T>(bool active) where T : UILayer<T>
-        {
-            var layer = GetMain<T>();
-            if (!layer)
-            {
-                Debug.LogError($"Layer {typeof(T).Name} not found.");
-            }
-            await layer.SetActiveAsync(active);
-        }
+        #endregion
 
 
         /// <summary>
@@ -75,10 +43,14 @@ namespace MH.Core.UISystem
         /// </summary>
         private void CacheUILayers()
         {
-            foreach (var layer in _layers)
+            var layers = GetComponentsInChildren<UILayer>();
+
+            foreach (var layer in layers)
             {
                 var layerType = layer.GetType();
-                if (!_cachedLayers.TryAdd(layerType, layer))
+                layer.Initialized();
+
+                if (!_layerMap.TryAdd(layerType, layer))
                 {
                     Debug.LogError($"Duplicate UI layer of type {layerType} found. Only the first instance will be used.");
                 }
