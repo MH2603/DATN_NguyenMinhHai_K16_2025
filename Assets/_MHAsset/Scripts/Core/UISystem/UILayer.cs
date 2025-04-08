@@ -95,23 +95,22 @@ namespace MH.UISystem
             return contextInstance as TView;
         }
 
-        protected void SetupViewInstance<TView, TViewModel>(
+        protected void SetupViewInstance<TView>(
             TView viewInstance,
-            TViewModel viewModel
+            IViewModel viewModel
             )
-            where TView : UIView<TViewModel>
-            where TViewModel : UIViewModel
+            where TView : UIView
         {
             //viewInstance.OnPreAppear.Subscribe(_ => onPreInitialize?.Invoke(viewInstance)).AddTo(viewInstance);
 
             if (viewModel != null)
             {
-                viewInstance.SetViewModel(viewModel);
+                viewInstance.LoadViewModel(viewModel);
             }
 
             //viewInstance.OnPostAppear.Subscribe(_ => onPostInitialize?.Invoke(viewInstance)).AddTo(viewInstance); 
 
-            viewInstance.UILayer = this;
+            viewInstance.ParentLayer = this;
             CurrentView = viewInstance;
         }
 

@@ -18,10 +18,9 @@ namespace MH.UISystem
         /// <param name="onPreInitialize">An action to be executed before initializing the popup.</param>
         /// <param name="onPostInitialize">An action to be executed after initializing the popup.</param>
         /// <returns>A UniTask representing the asynchronous operation that returns the popup instance.</returns>
-        public async UniTask<TView> ShowAsync<TView, TViewModel>(
-            TViewModel viewModel = null)
-            where TView : UIView<TViewModel>
-            where TViewModel : UIViewModel
+        public async UniTask<TView> ShowAsync<TView>(
+            IViewModel viewModel = null)
+            where TView : UIView
         {
             if (!TryGetContextInstance<TView>(out var popupInstance))
             {

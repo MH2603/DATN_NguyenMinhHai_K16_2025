@@ -1,5 +1,7 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace MH.UISystem
@@ -13,28 +15,39 @@ namespace MH.UISystem
         Disappeared
     }
 
-    public abstract class UIViewModel
+    public interface IViewModel
     {
 
     }
     
-
-    [RequireComponent(typeof(CanvasGroup))]
+    
     [RequireComponent(typeof(Canvas))]
     [RequireComponent(typeof(GraphicRaycaster))]
     public abstract class UIView : MonoBehaviour 
     {
         #region ------------ Fields --------------
 
-        [SerializeField] private ViewAnimation _showAnimation;
-        [SerializeField] private ViewAnimation _hideAnimation;
-
+        private UIViewAnimator _animator;
         private CanvasGroup _canvasGroup;
 
         public float LastShowTime;
         public EVisibleState EVisibleState { get; private set; } = EVisibleState.Disappeared;
-        public CanvasGroup CanvasGroup => _canvasGroup ? _canvasGroup : _canvasGroup = GetComponent<CanvasGroup>();
-        public UILayer UILayer;
+
+        public UILayer ParentLayer;
+
+        #endregion
+
+        #region ------- Unity Methdos ---------
+
+        private void Awake()
+        {
+            RegisterEvents();
+        }
+
+        private void OnDestroy()
+        {
+            
+        }
 
         #endregion
 
@@ -59,11 +72,11 @@ namespace MH.UISystem
             // reset View Status to normal
             var rectTransform = (RectTransform)transform;
             await InitializeRectTransformAsync(rectTransform);
-            CanvasGroup.alpha = 1;
+
             gameObject.SetActive(true);
 
-            if (useAnimation && _showAnimation != null)
-                await _showAnimation.AnimateAsync(rectTransform, CanvasGroup);
+            if (useAnimation && _animator != null)
+                await _animator.AnimateShowAsync();
 
             EVisibleState = EVisibleState.Appeared;
             //_postAppear.OnNext(this); // call a event when appear process completed
@@ -84,15 +97,30 @@ namespace MH.UISystem
 
             await UniTask.Yield(cancellationToken: this.GetCancellationTokenOnDestroy());
 
-            if (useAnimation && _hideAnimation != null)
-                await _hideAnimation.AnimateAsync(transform, CanvasGroup);
+            if (useAnimation && _animator != null)
+                await _animator.AnimateHideAsync();
 
             gameObject.SetActive(false);
 
             EVisibleState = EVisibleState.Disappeared;
             //_postAppear.OnNext(this);
-        } 
+        }
+
+        public virtual void LoadViewModel(IViewModel viewModel)
+        {
+            
+        }
+            
+        
         #endregion
+        
+        /// <summary>
+        /// call at Awake()
+        /// </summary>
+        protected virtual void RegisterEvents()
+        {
+            _animator = GetComponentInChildren<UIViewAnimator>();
+        }
 
         /// <summary>
         /// Reset RectTransform to default values.
@@ -111,18 +139,18 @@ namespace MH.UISystem
     }
 
 
-    public abstract class UIView<TViewModel> : UIView where TViewModel : UIViewModel
-    {
-
-        [SerializeField] private TViewModel _viewModel;
-
-        #region ------------ Public Methods -----------
-
-        public virtual void SetViewModel(TViewModel viewModel)
-        {
-            _viewModel = viewModel;
-        }
-
-        #endregion
-    }
+    // public abstract class UIView<TViewModel> : UIView where TViewModel : IViewModel
+    // {
+    //
+    //     [SerializeField] private TViewModel _viewModel;
+    //
+    //     #region ------------ Public Methods -----------
+    //
+    //     public virtual void SetViewModel(TViewModel viewModel)
+    //     {
+    //         _viewModel = viewModel;
+    //     }
+    //
+    //     #endregion
+    // }
 }

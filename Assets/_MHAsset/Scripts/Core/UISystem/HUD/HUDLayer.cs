@@ -17,10 +17,9 @@ namespace MH.UISystem
         /// <param name="onPostInitialize">The action to be invoked after initialization (optional).</param>
         /// <returns>A UniTask representing the asynchronous operation.</returns>
         /// <exception cref="ArgumentNullException">Thrown if the HUD instance can't be found.</exception>
-        public async UniTask<T> ShowAsync<T, TViewModel>(
-            TViewModel viewModel = null)
-            where T : UIView<TViewModel>
-            where TViewModel : UIViewModel
+        public async UniTask<T> ShowAsync<T>(
+            IViewModel viewModel = null)
+            where T : UIView
         {
             if (!TryGetContextInstance<T>(out var hudInstance))
             {

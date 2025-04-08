@@ -23,9 +23,8 @@ namespace MH.UISystem
         /// <param name="onPostInitialize">Optional action to be executed after the window initialization.</param>
         /// <returns>A <see cref="UniTask{T}"/> representing the asynchronous operation. The result is the window context instance.</returns>
         public async UniTask<TView> ShowAsync<TView, TViewModel>(
-            TViewModel viewModel = null)
-            where TView : UIView<TViewModel>
-            where TViewModel : UIViewModel
+            IViewModel viewModel = null)
+            where TView : UIView
         {
             if (!TryGetContextInstance<TView>(out var windowInstance))
             {
