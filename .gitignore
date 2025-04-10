@@ -76,3 +76,5 @@ crashlytics-build.properties
 
 # MH custom 
 .idea/
+*.TokenResponse-user
+Assets/GSpreadSheets/Editor/Google.Apis.Auth.OAuth2.Responses.TokenResponse-user.meta
