@@ -27,7 +27,7 @@ namespace MH.UISystem
     {
         #region ------------ Fields --------------
 
-        private UIViewAnimator _animator;
+        [SerializeField] private UIViewAnimator _animator;
         private CanvasGroup _canvasGroup;
 
         public float LastShowTime;
