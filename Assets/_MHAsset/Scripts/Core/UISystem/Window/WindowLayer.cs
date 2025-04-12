@@ -22,7 +22,7 @@ namespace MH.UISystem
         /// <param name="onPreInitialize">Optional action to be executed before the window initialization.</param>
         /// <param name="onPostInitialize">Optional action to be executed after the window initialization.</param>
         /// <returns>A <see cref="UniTask{T}"/> representing the asynchronous operation. The result is the window context instance.</returns>
-        public async UniTask<TView> ShowAsync<TView, TViewModel>(
+        public async UniTask<TView> ShowAsync<TView>(
             IViewModel viewModel = null)
             where TView : UIView
         {
