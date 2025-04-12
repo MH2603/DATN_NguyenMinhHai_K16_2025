@@ -2,21 +2,28 @@
 
 namespace MH.GameState
 {
-    public class LoadingState : State<EGameState>
+    public class LoadingState : BaseGameState
     {
+        public LoadingState(StateMachine<EGameState> stateMachine) : base(stateMachine)
+        {
+            
+        }
+
         public override void OnEnter()
         {
-
+            _stateMachine.ChangeState(EGameState.MainMenu);
         }
 
         public override void OnExit()
         {
-            throw new NotImplementedException();
+            
         }
 
         public override void OnUpdate()
         {
-            throw new NotImplementedException();
+            
         }
+
+        
     }
 }

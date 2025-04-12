@@ -2,8 +2,12 @@
 
 namespace MH.GameState
 {
-    public class ExitState : State<EGameState>
+    public class ExitState : BaseGameState
     {
+        public ExitState(StateMachine<EGameState> stateMachine) : base(stateMachine)
+        {
+        }
+
         public override void OnEnter()
         {
             throw new NotImplementedException();

@@ -28,11 +28,11 @@ namespace MH.GameState
         public GameStateSystem() 
         {
             // Register all game states here
-            RegisterState(EGameState.Loading, new LoadingState());
-            RegisterState(EGameState.MainMenu, new MainMenuState());
-            RegisterState(EGameState.Playing, new PlayingState());
-            RegisterState(EGameState.Pause, new PauseState());
-            RegisterState(EGameState.Exit, new ExitState());
+            RegisterState(EGameState.Loading, new LoadingState(this));
+            RegisterState(EGameState.MainMenu, new MainMenuState(this));
+            RegisterState(EGameState.Playing, new PlayingState(this));
+            RegisterState(EGameState.Pause, new PauseState(this));
+            RegisterState(EGameState.Exit, new ExitState(this));
 
             ChangeState(EGameState.Loading);
         }

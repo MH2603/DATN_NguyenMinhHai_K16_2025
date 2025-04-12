@@ -2,8 +2,12 @@
 
 namespace MH.GameState
 {
-    public class PlayingState : State<EGameState>
+    public class PlayingState : BaseGameState
     {
+        public PlayingState(StateMachine<EGameState> stateMachine) : base(stateMachine)
+        {
+        }
+
         public override void OnEnter()
         {
             throw new NotImplementedException();

@@ -2,8 +2,12 @@
 
 namespace MH.GameState
 {
-    public class PauseState : State<EGameState>
+    public class PauseState : BaseGameState
     {
+        public PauseState(StateMachine<EGameState> stateMachine) : base(stateMachine)
+        {
+        }
+
         public override void OnEnter()
         {
             throw new System.NotImplementedException();

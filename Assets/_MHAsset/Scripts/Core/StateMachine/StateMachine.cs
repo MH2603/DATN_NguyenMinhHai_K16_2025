@@ -20,9 +20,12 @@ namespace MH
         //private readonly Action _onUpdate;
         //private readonly Action _onExit;
 
+        public  StateMachine<T>  _stateMachine;
+
         // Constructor assigns the passed delegates, falling back to empty methods if null
-        public State()
+        public State(StateMachine<T> stateMachine)
         {
+            _stateMachine = stateMachine;
             //_onEnter = onEnter ?? (() => { });  // Use no-op if null
             //_onUpdate = onUpdate ?? (() => { });
             //_onExit = onExit ?? (() => { });

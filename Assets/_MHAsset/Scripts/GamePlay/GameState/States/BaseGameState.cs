@@ -1,16 +1,15 @@
-﻿using MH.UISystem;
-
+﻿
 namespace MH.GameState
 {
-    public class MainMenuState : BaseGameState
+    public abstract class BaseGameState : State<EGameState>
     {
-        public MainMenuState(StateMachine<EGameState> stateMachine) : base(stateMachine)
+        public BaseGameState(StateMachine<EGameState> stateMachine) : base(stateMachine)
         {
         }
 
         public override void OnEnter()
         {
-            WindowLayer.Main.ShowAsync<MainMenuWindow>();
+            
         }
 
         public override void OnExit()
