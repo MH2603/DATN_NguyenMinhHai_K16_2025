@@ -14,16 +14,31 @@ namespace MH
         #endregion
 
         #region --------- Public Methods --------
-
+#if UNITY_EDITOR
         static ServiceLocator()
         {
-
-#if UNITY_EDITOR
             // clear static properties when end play mode
-            EditorApplication.playModeStateChanged += (data) => Clear();
-#endif
+            EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
+
         }
-            
+
+        /// <summary>
+        /// Called whenever the Unity Editor's play mode changes.
+        /// </summary>
+        /// <param name="state">The new play mode state.</param>
+        private static void OnPlayModeStateChanged(PlayModeStateChange state)
+        {
+            // Check if we are exiting play mode
+            if (state == PlayModeStateChange.ExitingPlayMode)
+            {
+               
+                Debug.Log(" [Log] Service Map was clear ");
+                Clear();
+            }
+        }
+
+#endif
+
 
         /// <summary>
         /// Registers a service instance with the locator

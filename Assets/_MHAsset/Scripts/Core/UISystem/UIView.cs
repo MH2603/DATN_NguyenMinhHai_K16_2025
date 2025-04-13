@@ -28,7 +28,6 @@ namespace MH.UISystem
         #region ------------ Fields --------------
 
         [SerializeField] private UIViewAnimator _animator;
-        private CanvasGroup _canvasGroup;
 
         public float LastShowTime;
         public EVisibleState EVisibleState { get; private set; } = EVisibleState.Disappeared;

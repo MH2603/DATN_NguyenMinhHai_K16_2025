@@ -1,4 +1,5 @@
-﻿using MH.UISystem;
+﻿using MH.SaveSystem;
+using MH.UISystem;
 
 namespace MH.GameState
 {
@@ -10,7 +11,15 @@ namespace MH.GameState
 
         public override void OnEnter()
         {
-            WindowLayer.Main.ShowAsync<MainMenuWindow>();
+            var save = ServiceLocator.Get<ISaveSystem>().GameSave;
+            bool isNewGame = save.Chapter == 0 && save.CheckPoint == 0;
+
+            var mainMenuVM = new MainMenuViewModel
+            {
+                IsShowContinueBtn = !isNewGame
+            };
+
+            WindowLayer.Main.ShowAsync<MainMenuWindow>(mainMenuVM);
         }
 
         public override void OnExit()

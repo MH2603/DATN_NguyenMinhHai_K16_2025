@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MH.SaveSystem;
+using MH.Player;
 using UnityEngine;
 
 namespace MH.ChapterSystem
@@ -18,13 +15,16 @@ namespace MH.ChapterSystem
     {
         #region --------------- Fields -----------
 
-        [SerializeField] public string Id { get; private set; }
+        [SerializeField] private Transform[] _checkPoints;
 
+        private int _currentCheckPointIndex;
+        private Transform _checkPoint => _checkPoints[_currentCheckPointIndex]; 
+  
         #endregion
 
         #region ------------ Unity Methods -----------
 
-        private void Start()
+        void Start()
         {
             
         }
@@ -34,6 +34,10 @@ namespace MH.ChapterSystem
 
         #region -------------- Public Methods -------------
 
+        public Transform GetCheckPoint(int index)
+        {
+            return _checkPoints[index];
+        }
 
         #endregion
 

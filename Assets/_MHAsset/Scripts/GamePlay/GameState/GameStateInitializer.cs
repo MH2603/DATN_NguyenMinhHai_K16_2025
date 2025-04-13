@@ -1,5 +1,6 @@
 ﻿
 using Cysharp.Threading.Tasks;
+using MH.EventBus;
 using UnityEngine;
 
 namespace MH.GameState
@@ -9,6 +10,8 @@ namespace MH.GameState
     {
         public override async UniTask Initialize()
         {
+            Debug.Log(ServiceLocator.Get<IEventBus>());
+
             var gameStateSystem  = new GameStateSystem();
 
             ServiceLocator.Register<IGameStateSystem>(gameStateSystem);
