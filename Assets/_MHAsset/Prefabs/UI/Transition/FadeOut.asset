@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa2fea8ca142de8439dddf8d6ddf0229, type: 3}
   m_Name: FadeOut
   m_EditorClassIdentifier: 
-  _from: 0
-  _to: 1
+  _from: 1
+  _to: 0
   _startDelay: 0
   _duration: 0.5
   _ease: 1

@@ -21,6 +21,22 @@ namespace MH.EnitySystem
             }
         }
 
+        private void Update()
+        {
+            for (int i=0; i < _components.Length; i ++)
+            {
+                _components[i].ManualUpdate();  
+            }
+        }
+
+        private void FixedUpdate()
+        {
+            for (int i = 0; i < _components.Length; i++)
+            {
+                _components[i].ManualFixedUpdate();
+            }
+        }
+
         public T Get<T>() where T : EntityComponent
         {
             if (_componentMap.ContainsKey(typeof(T)))
@@ -30,5 +46,7 @@ namespace MH.EnitySystem
 
             return null;
         }
+
+        
     }
 }

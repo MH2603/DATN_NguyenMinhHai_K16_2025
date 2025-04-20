@@ -53,12 +53,12 @@ public class PickUpInteractor : MonoBehaviour, IInteractor
             if (hit.collider.TryGetComponent(out IInteractable interactable))
             {
                 detectedInteractable = interactable;
-                detectedInteractable.OnTrackingEnter();
+                detectedInteractable.EnterTracking();
                 return;
             }
         }
         // If no interactable is hit, set to null
-        if(detectedInteractable != null) detectedInteractable.OnTrackingExit();
+        if(detectedInteractable != null) detectedInteractable.ExitTracking();
         detectedInteractable = null;
         
     }

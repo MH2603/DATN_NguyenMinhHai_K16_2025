@@ -2,11 +2,11 @@ using UnityEngine;
 
 namespace MH.Interaction
 {
-    public abstract class IntertactorBase : MonoBehaviour, IInteractor
+    public abstract class BaseIntertactor : MonoBehaviour, IInteractor
     {
         #region ------------ Fields -------------
 
-        protected IInteractable detectedInteractable; 
+        protected IInteractable _trackingInteractable; 
 
         #endregion
 
@@ -19,16 +19,12 @@ namespace MH.Interaction
 
         public virtual void PerformInteraction()
         {
-            if (detectedInteractable == null || !detectedInteractable.CanInteract(this)) return;
+            if (_trackingInteractable == null || !_trackingInteractable.CanInteract(this)) return;
         
-            detectedInteractable.Interact(this);
+            _trackingInteractable.Interact(this);
         }
 
         #endregion
-
-        protected abstract void DetectInteractable();
-       
-
     }
     
     

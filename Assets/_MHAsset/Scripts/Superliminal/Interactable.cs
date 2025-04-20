@@ -9,8 +9,6 @@ namespace MH.Superliminal
         OnHand = 1,
     }
 
-
-
     public class Interactable : MonoBehaviour
     {
         #region -------------------- Fields -------------------

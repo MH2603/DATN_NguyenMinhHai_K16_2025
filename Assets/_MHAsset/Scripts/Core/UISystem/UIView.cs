@@ -118,7 +118,7 @@ namespace MH.UISystem
         /// </summary>
         protected virtual void RegisterEvents()
         {
-            _animator = GetComponentInChildren<UIViewAnimator>();
+
         }
 
         /// <summary>
