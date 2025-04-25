@@ -11,7 +11,9 @@ GameObject:
   - component: {fileID: 6028459081895291211}
   - component: {fileID: 873923332652225079}
   - component: {fileID: 581258431297176122}
-  m_Layer: 0
+  - component: {fileID: 2596057365004790490}
+  - component: {fileID: 2815560287179563409}
+  m_Layer: 9
   m_Name: WallCornerOuter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25,13 +27,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1373006930321274743}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.50000006, y: 0.49999997, z: 0.50000006, w: -0.49999997}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7795003020192286007}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &873923332652225079
 MeshFilter:
@@ -83,6 +85,48 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &2596057365004790490
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1373006930321274743}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.10799855, y: 1.0999963, z: 2.9999998}
+  m_Center: {x: -0.04599759, y: 0.5499979, z: 1.5000001}
+--- !u!65 &2815560287179563409
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1373006930321274743}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.0999967, y: 0.108003855, z: 2.9999998}
+  m_Center: {x: 0.45000154, y: 1.0459999, z: 1.5000001}
 --- !u!1 &4257945040395961710
 GameObject:
   m_ObjectHideFlags: 0
@@ -94,7 +138,7 @@ GameObject:
   - component: {fileID: 4578210431616209294}
   - component: {fileID: 2219321928383961548}
   - component: {fileID: 4381230511434665765}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: WallCornerOuterSkirting
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -108,13 +152,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4257945040395961710}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.5000002, y: 0.49999985, z: 0.5, w: -0.5}
   m_LocalPosition: {x: -2.3708079e-20, y: -1.4551915e-13, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7795003020192286007}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &2219321928383961548
 MeshFilter:
@@ -175,7 +219,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7795003020192286007}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: WallCornerOuter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -189,6 +233,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7450846450719186829}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -197,5 +242,4 @@ Transform:
   - {fileID: 6028459081895291211}
   - {fileID: 4578210431616209294}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

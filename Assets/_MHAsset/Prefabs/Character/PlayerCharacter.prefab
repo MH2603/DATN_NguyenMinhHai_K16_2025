@@ -129,7 +129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02590c7b862d28a46847c8b8370cc80a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _detectDst: 5
+  detectDst: 5
 --- !u!1 &1606607724195816915
 GameObject:
   m_ObjectHideFlags: 0
@@ -277,7 +277,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.4
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
