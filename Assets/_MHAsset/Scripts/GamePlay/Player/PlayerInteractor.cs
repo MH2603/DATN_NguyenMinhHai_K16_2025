@@ -9,8 +9,11 @@ namespace MH.Player
     {
         #region ------------ Fields -----------
 
-        [SerializeField] private float _detectDst = 5f;
+        [SerializeField] private float detectDst = 5f;
 
+        public Transform Transform => _trans;
+        public bool IsActive { get; set; }
+        
         private IInteractable _trackingInteractable;
         private Transform _trans;
 
@@ -18,7 +21,7 @@ namespace MH.Player
 
         #region ----------------- Unity Methods ------------
 
-
+        
 
         #endregion
 
@@ -33,12 +36,15 @@ namespace MH.Player
 
             _trackingInteractable = null;
             _trans = this.transform;
+            IsActive = true;
         }
 
         public override void ManualUpdate()
         {
             base.ManualUpdate();
 
+            if(!IsActive) return;
+            
             DetectingInteractable();
 
             // todo: get callback from InputManager
@@ -58,6 +64,7 @@ namespace MH.Player
 
                 _trackingInteractable.ExitTracking();
                 _trackingInteractable = null;
+                HUDLayer.Main.HideAsync<InteractHUD>();
             }
         } 
 
@@ -67,10 +74,13 @@ namespace MH.Player
 
         private void DetectingInteractable()
         {
-            if( Physics.Raycast(_trans.position, _trans.forward, out RaycastHit hit, _detectDst) &&
+            if( Physics.Raycast(_trans.position, _trans.forward, out RaycastHit hit, detectDst) &&
                 hit.transform &&
                 hit.transform.TryGetComponent(out IInteractable interactable))
             {
+
+                if (!interactable.CanInteract(this)) return;
+
                 if (_trackingInteractable != null && interactable != _trackingInteractable)
                 {
                     _trackingInteractable.ExitTracking();
@@ -87,7 +97,7 @@ namespace MH.Player
                 HUDLayer.Main.ShowAsync<InteractHUD>(vm);
 
 #if UNITY_EDITOR
-                DebugDrawer.DrawRay(_trans.position, _trans.forward * _detectDst, Color.red, 0.02f); 
+                DebugDrawer.DrawRay(_trans.position, _trans.forward * detectDst, Color.red, 0.02f); 
 #endif
             }
             else
@@ -101,7 +111,7 @@ namespace MH.Player
                 HUDLayer.Main.HideAsync<InteractHUD>();
 
 #if UNITY_EDITOR
-                DebugDrawer.DrawRay(_trans.position, _trans.forward * _detectDst, Color.green, 0.02f); 
+                DebugDrawer.DrawRay(_trans.position, _trans.forward * detectDst, Color.green, 0.02f); 
 #endif
             }
         }

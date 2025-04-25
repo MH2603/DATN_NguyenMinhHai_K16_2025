@@ -18,6 +18,8 @@ public class PickUpInteractor : MonoBehaviour, IInteractor
 
     // Property from IInteractor interface
     public IInteractable InteractableTarget => detectedInteractable;
+    public bool IsActive { get; set; }
+    public Transform Transform => transform;
 
     private void Awake()
     {

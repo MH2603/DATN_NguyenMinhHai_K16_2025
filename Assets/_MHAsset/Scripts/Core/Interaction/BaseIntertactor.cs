@@ -8,6 +8,10 @@ namespace MH.Interaction
 
         protected IInteractable _trackingInteractable; 
 
+        public Transform Transform => transform;
+
+        public bool IsActive { get; set; }
+
         #endregion
 
 

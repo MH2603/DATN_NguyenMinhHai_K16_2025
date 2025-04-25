@@ -86,7 +86,7 @@ namespace MH.UISystem
 
         private async UniTask HandlePreviousView(UIView previousView, bool stackToWindowLayer)
         {
-            // add previouse view on top of stack
+            // add previous view on top of stack
             if (stackToWindowLayer)
             {
                 _windowStack.Push(previousView);
