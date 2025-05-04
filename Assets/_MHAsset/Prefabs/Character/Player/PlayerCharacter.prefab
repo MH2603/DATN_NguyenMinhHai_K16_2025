@@ -129,7 +129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02590c7b862d28a46847c8b8370cc80a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectDst: 5
+  detectDst: 10
 --- !u!1 &1606607724195816915
 GameObject:
   m_ObjectHideFlags: 0
@@ -219,7 +219,7 @@ GameObject:
   - component: {fileID: 2308857205334262827}
   - component: {fileID: 7695217984605329488}
   - component: {fileID: 2075360752268446645}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PlayerCharacter
   m_TagString: Player
   m_Icon: {fileID: 0}
