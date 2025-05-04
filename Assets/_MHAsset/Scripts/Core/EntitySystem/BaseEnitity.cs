@@ -15,7 +15,7 @@ namespace MH.EnitySystem
         {
             foreach (var component in _components) 
             {
-                component.Initialized(this);
+                    component.Initialized(this);
 
                 _componentMap[component.GetType()] = component;
             }

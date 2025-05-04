@@ -1,11 +1,9 @@
-﻿
-
-using MH.EnitySystem;
+﻿using MH.EnitySystem;
 
 namespace MH
 {
     public class SceneEntity : BaseEnitity
     {
-
+        
     }
 }

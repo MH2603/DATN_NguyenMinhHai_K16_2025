@@ -37,6 +37,8 @@ namespace MH.Portal
             _portalCamera.enabled = false;
 
             _screenMeshFilter = screen.GetComponent<MeshFilter>();
+            
+            playerCamera = Camera.main;
         }
 
         private void Update()
