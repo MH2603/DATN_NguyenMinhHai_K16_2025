@@ -1,4 +1,7 @@
 ﻿using System;
+using Cysharp.Threading.Tasks;
+using MH.UISystem;
+using UnityEngine;
 
 namespace MH.GameState
 {
@@ -11,7 +14,7 @@ namespace MH.GameState
 
         public override void OnEnter()
         {
-            _stateMachine.ChangeState(EGameState.MainMenu);
+            TranderMainMenuStateAsync();
         }
 
         public override void OnExit()
@@ -24,6 +27,15 @@ namespace MH.GameState
             
         }
 
-        
+        private async void TranderMainMenuStateAsync()
+        {
+            WindowLayer.Main.ShowAsync<LoadingWindow>();
+            
+            await UniTask.Delay(2000);
+
+             await WindowLayer.Main.BackAsync();
+            _stateMachine.ChangeState(EGameState.MainMenu);
+            Debug.Log($"from loading to main menu: {_stateMachine.CurrentKey}");
+        }
     }
 }

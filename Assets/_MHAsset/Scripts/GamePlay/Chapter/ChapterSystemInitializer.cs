@@ -6,11 +6,11 @@ namespace MH.ChapterSystem
     [CreateAssetMenu(fileName = "ChapterSystem", menuName = "MH_SO/GameSystem/Chapter System")]
     public class ChapterSystemInitializer : GameSystemInitializer
     {
-        [SerializeField] private ChapterManager _managerPrefab;
-
+        [SerializeField] private ChapterConfig[] _chapterConfigs;
+        
         public override async UniTask Initialize()
         {
-            var manager = GameObject.Instantiate(_managerPrefab);
+            var manager = new ChapterManager(_chapterConfigs);
 
             ServiceLocator.Register<IChapterManager>(manager);
         }

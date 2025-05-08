@@ -20,11 +20,11 @@ RenderSettings:
   m_FogDensity: 0.01
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
+  m_AmbientSkyColor: {r: 0.25, g: 0.25, b: 0.25, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
-  m_AmbientMode: 0
+  m_AmbientMode: 3
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: 0.5
@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: 14c4ad422cbb67e47b60555b77b7f573, type: 2}
   m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
@@ -131,26 +131,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 512354076402158869, guid: 834cb8f0bc60a4745bf89227b4476073, type: 3}
-      propertyPath: _gameSystemInitializers.Array.size
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 512354076402158869, guid: 834cb8f0bc60a4745bf89227b4476073, type: 3}
-      propertyPath: _gameSystemInitializers.Array.data[0]
-      value: 
-      objectReference: {fileID: 11400000, guid: bdb015818157e2041bb4888f5b58b16f, type: 2}
-    - target: {fileID: 512354076402158869, guid: 834cb8f0bc60a4745bf89227b4476073, type: 3}
-      propertyPath: _gameSystemInitializers.Array.data[1]
-      value: 
-      objectReference: {fileID: 11400000, guid: 100e74561a46f234e9b551f18e5f58f3, type: 2}
-    - target: {fileID: 512354076402158869, guid: 834cb8f0bc60a4745bf89227b4476073, type: 3}
-      propertyPath: _gameSystemInitializers.Array.data[5]
-      value: 
-      objectReference: {fileID: 11400000, guid: f19ec9e08cc1ee34990d55eb90733904, type: 2}
-    - target: {fileID: 512354076402158869, guid: 834cb8f0bc60a4745bf89227b4476073, type: 3}
-      propertyPath: _gameSystemInitializers.Array.data[6]
-      value: 
-      objectReference: {fileID: 11400000, guid: c15c1a9cad24ec643979a03175272ced, type: 2}
     - target: {fileID: 3841287913348722241, guid: 834cb8f0bc60a4745bf89227b4476073, type: 3}
       propertyPath: m_Name
       value: GameBootstrap

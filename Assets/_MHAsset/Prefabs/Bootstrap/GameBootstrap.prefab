@@ -46,8 +46,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gameSystemInitializers:
   - {fileID: 11400000, guid: 100e74561a46f234e9b551f18e5f58f3, type: 2}
-  - {fileID: 11400000, guid: bdb015818157e2041bb4888f5b58b16f, type: 2}
   - {fileID: 11400000, guid: af770a7f1f879054cbb3b1e7784eb36f, type: 2}
+  - {fileID: 11400000, guid: c15c1a9cad24ec643979a03175272ced, type: 2}
   - {fileID: 11400000, guid: 6357cbba94eb74844a8c64e67758fc06, type: 2}
   - {fileID: 11400000, guid: 4d43c61b90e5755419fa240e3fe2619f, type: 2}
+  - {fileID: 11400000, guid: 4e558de8a77394e44a2f86d9a486fcca, type: 2}
+  - {fileID: 11400000, guid: bdb015818157e2041bb4888f5b58b16f, type: 2}
   - {fileID: 11400000, guid: f19ec9e08cc1ee34990d55eb90733904, type: 2}

@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc930e51b95d30947a39233841931092, type: 3}
   m_Name: ChapterSystem
   m_EditorClassIdentifier: 
-  _managerPrefab: {fileID: 8599499714535088466, guid: 756fdfbe68434f047978b40a23e7801b, type: 3}
+  _chapterConfigs:
+  - {fileID: 11400000, guid: fdb491ebd2c851c47835233d7bc5bca6, type: 2}
