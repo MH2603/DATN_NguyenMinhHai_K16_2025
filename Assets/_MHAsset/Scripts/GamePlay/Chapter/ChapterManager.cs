@@ -57,9 +57,6 @@ namespace MH.ChapterSystem
             sceneLoader.LoadSceneAsync(chapterConfig.SceneName);
             
             await UniTask.NextFrame();
-            
-            // hard-code
-            playerManager.Teleport(Vector3.up, Quaternion.identity);
 
             saveSystem.GameSave.Chapter = nextChapterIndex;
             saveSystem.Save();

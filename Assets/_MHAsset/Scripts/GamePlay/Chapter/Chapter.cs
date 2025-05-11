@@ -19,14 +19,19 @@ namespace MH.ChapterSystem
 
         private int _currentCheckPointIndex;
         private Transform _checkPoint => _checkPoints[_currentCheckPointIndex]; 
-  
+        
+        private IPlayerManager playerManager => ServiceLocator.Get<IPlayerManager>();
+        private ISaveSystem saveSystem => ServiceLocator.Get<ISaveSystem>();
+        
         #endregion
 
         #region ------------ Unity Methods -----------
 
         void Start()
         {
-            
+            var save = saveSystem.GameSave;
+            var checkpoint = GetCheckPoint(save.CheckPoint);
+            playerManager.Teleport(checkpoint.position, checkpoint.rotation);
         }
 
         #endregion

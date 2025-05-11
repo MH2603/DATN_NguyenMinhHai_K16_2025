@@ -2987,6 +2987,10 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
+    - target: {fileID: 4024703589138821994, guid: 2a0112f4fd798c8459cf0e23c603350d, type: 3}
+      propertyPath: m_ScaleInLightmap
+      value: 1.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4200687743340694993, guid: 2a0112f4fd798c8459cf0e23c603350d, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
