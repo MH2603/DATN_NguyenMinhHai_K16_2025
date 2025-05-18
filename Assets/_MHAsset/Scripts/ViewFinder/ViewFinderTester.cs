@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEditor;
 
 namespace MH
 {
@@ -115,6 +116,21 @@ namespace MH
 
             BuildBackgroundQuad();
         }
+
+
+        public void SaveCuttedObjectToPrefab()
+        {
+            SaveAsPrefab(cuttedObjectHolder.gameObject, "Assets/_MHAsset/Prefabs/ViewFinder/CuttedObjects/01.prefab");
+        }
+        
+       
+        public static void SaveAsPrefab(GameObject obj, string path)
+        {
+            // Tạo prefab mới tại đường dẫn trong project
+            PrefabUtility.SaveAsPrefabAssetAndConnect(obj, path, InteractionMode.UserAction);
+        }
+
+            
         
         #endregion
 
