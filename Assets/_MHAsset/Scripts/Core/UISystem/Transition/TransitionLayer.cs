@@ -49,6 +49,7 @@ namespace MH.UISystem
             if (_viewRuntimeMap.TryGetValue(typeof(T), out var transitionInstance))
             {
                 await transitionInstance.HideAsync();
+                CurrentView = null;
                 return transitionInstance as T;
             }
 

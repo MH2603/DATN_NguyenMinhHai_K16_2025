@@ -27,6 +27,7 @@ namespace MH.Superliminal
         private InteractableComponent _intertable;
         private IInteractor _interactor;            // Reference to the interactor
         private Transform _transform;
+        private Transform _originalParent;        // Original parent of the object
 
         // Computed properties
         private Vector3 _boxSize => _transform.localScale.x * _collider.size;
@@ -41,6 +42,7 @@ namespace MH.Superliminal
         {
             base.Initialized(baseEnitity);
             SetupComponents();
+            _originalParent = _transform.parent;
         }
 
         public override void ManualUpdate()
@@ -68,7 +70,7 @@ namespace MH.Superliminal
         {
             State = InteractableState.None;
             
-            _transform.SetParent(null);
+            _transform.SetParent(_originalParent);
             _rb.isKinematic = false;
             _intertable.SetLockInteract(false);
 

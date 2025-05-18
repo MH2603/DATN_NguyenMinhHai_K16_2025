@@ -17,10 +17,10 @@ namespace MH.UISystem
         {
             canvasGroup.alpha = _from;
 
-            canvasGroup.DOFade(_to, _duration).SetDelay(_startDelay).SetEase(_ease);
-            float awaitDur = _duration + _duration;
+            canvasGroup.DOFade(_to, _duration).SetDelay(_startDelay).SetUpdate(true).SetEase(_ease);
+            float awaitDur = _startDelay + _duration;
 
-            await UniTask.Delay((int)(awaitDur * 1000));
+            await UniTask.Delay((int)(awaitDur * 1000), DelayType.UnscaledDeltaTime);
 
             //await canvasGroup.DOFade(_to, _duration).SetDelay(_startDelay).SetEase(_ease).SetUpdate(true).ToUniTask();
         }

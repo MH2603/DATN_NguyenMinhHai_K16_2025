@@ -23,7 +23,7 @@ namespace MH.GameState
     {
         private IEventBus _eventBus => ServiceLocator.Get<IEventBus>();
 
-        public EGameState CurrentState { get; private set; }
+        public EGameState CurrentState { get => _currentKey; }
 
         public GameStateSystem() 
         {

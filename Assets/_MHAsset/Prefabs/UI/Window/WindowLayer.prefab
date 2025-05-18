@@ -57,7 +57,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -117,3 +117,6 @@ MonoBehaviour:
   _viewPrefabs:
   - {fileID: 5859064913462681219, guid: 9811cb18e2680a34d8f1c07b299823c2, type: 3}
   - {fileID: 5887093559733087364, guid: eb058d89ec6cca540bafecf0ffd98608, type: 3}
+  - {fileID: 2386684421571985523, guid: a3fc9805f4224454db56a15424e52783, type: 3}
+  - {fileID: 8430112527938905579, guid: 807430cc120292248a388c83924ac8dc, type: 3}
+  - {fileID: 4477597738619815827, guid: b305ae3b3069b534998be517e30674ab, type: 3}

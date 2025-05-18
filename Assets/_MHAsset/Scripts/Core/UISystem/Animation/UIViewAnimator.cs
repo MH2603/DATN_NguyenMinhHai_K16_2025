@@ -32,6 +32,16 @@ namespace MH.UISystem
 
         #region Public Methods
 
+        public void AnimateShow()
+        {
+            AnimateShowAsync().Forget();
+        }
+            
+        public void AnimateHide()
+        {
+            AnimateHideAsync().Forget();
+        }
+        
         public async UniTask AnimateShowAsync()
         {
             await AnimateAsync(_showAnimations);

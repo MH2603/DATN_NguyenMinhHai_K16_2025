@@ -69,6 +69,11 @@ namespace MH.Sound
             audioSource.rolloffMode = data.rolloffMode;
         }
 
+        public void SetSoundVolume(float volume)
+        {
+            audioSource.volume = volume;
+        }
+
         public void Play() {
             if (playingCoroutine != null) {
                 StopCoroutine(playingCoroutine);

@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using MH.EventBus;
+using MH.Sound.Event;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -6,6 +8,12 @@ namespace MH.Sound
 {
     public interface ISoundManager
     {
+        float SoundVolume { get; }
+        float MusicVolume { get; }
+        
+        void SetSoundVolume(float volume);
+        void SetMusicVolume(float volume);
+        
         SoundBuilder CreateSoundBuilder();
         void StopAll();
     }
@@ -38,6 +46,9 @@ namespace MH.Sound
         #endregion
 
         #region ---------- Properties ------------
+        
+        public float SoundVolume { get; private set; } = 1f; // Volume for sound effects
+        public float MusicVolume { get; private set; } = 1f; // Volume for music
 
         // Pool that manages the lifecycle of SoundEmitter objects
         private IObjectPool<SoundEmitter> _soundEmitterPool;
@@ -63,6 +74,26 @@ namespace MH.Sound
         #endregion
 
         #region ------------ Public Methods ---------
+
+        public void SetMusicVolume(float volume)
+        {
+            MusicVolume = volume;
+        }
+        
+        public void SetSoundVolume(float volume)
+        {
+            SoundVolume = volume;
+
+            for (int i=0; i < _activeSoundEmitters.Count; i++)
+            {
+                var soundEmitter = _activeSoundEmitters[i];
+                soundEmitter.SetSoundVolume(volume);
+            }
+            
+            var soundEvent = new ChangeSoundVolumeEvent(volume);
+            
+            ServiceLocator.Get<IEventBus>().Send(soundEvent);
+        }
 
         /// <summary>
         /// Creates a new SoundBuilder instance for building sound playback requests.

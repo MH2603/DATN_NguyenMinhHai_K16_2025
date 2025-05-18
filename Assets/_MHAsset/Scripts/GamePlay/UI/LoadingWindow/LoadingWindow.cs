@@ -9,6 +9,7 @@ namespace MH.UISystem
     {
         #region ------------ Fields -------------
 
+        [SerializeField] private CanvasGroup canvasGroup;
         [SerializeField] private Image bgImage;
         [Space]
         [SerializeField] private Transform loadingIcon;
@@ -22,6 +23,8 @@ namespace MH.UISystem
         private void Update()
         {
             loadingIcon.Rotate(rotationSpeed, Space.Self);
+            
+            canvasGroup.alpha += 1f/ 2f * Time.deltaTime;
         }
 
         #endregion

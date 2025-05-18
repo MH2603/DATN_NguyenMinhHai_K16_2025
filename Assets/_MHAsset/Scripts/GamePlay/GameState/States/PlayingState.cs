@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 namespace MH.GameState
 {
@@ -10,17 +11,17 @@ namespace MH.GameState
 
         public override void OnEnter()
         {
-            throw new NotImplementedException();
+            Debug.Log(" On Playing State Enter");
         }
 
         public override void OnExit()
         {
-            throw new NotImplementedException();
+
         }
 
         public override void OnUpdate()
         {
-            throw new NotImplementedException();
+            
         }
     }
 }
