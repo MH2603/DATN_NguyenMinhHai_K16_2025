@@ -634,8 +634,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 358522421727843566}
-  - component: {fileID: 7038184445296876932}
+  - component: {fileID: 8150387926405438742}
   - component: {fileID: 4969984161369549974}
+  - component: {fileID: 8685073874170102374}
+  - component: {fileID: 7183043043507131673}
+  - component: {fileID: 7038184445296876932}
   m_Layer: 0
   m_Name: Doctor
   m_TagString: Untagged
@@ -661,6 +664,56 @@ Transform:
   - {fileID: 9178987477737359088}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 101.601, z: 0}
+--- !u!114 &8150387926405438742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6165566897722277816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c8a01d9a07187c4db975c9865f6882a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4969984161369549974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6165566897722277816}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54f141628068b9b4493f69f797f003b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AutoPlayAnimations: 1
+  PaletteOverride: {fileID: 0}
+--- !u!114 &8685073874170102374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6165566897722277816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50f6c37c47a1c0543af3cc635df67a98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7183043043507131673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6165566897722277816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d60a1677cb6f92488ba2bc9442e3f23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!95 &7038184445296876932
 Animator:
   serializedVersion: 5
@@ -682,20 +735,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &4969984161369549974
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6165566897722277816}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 54f141628068b9b4493f69f797f003b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AutoPlayAnimations: 1
-  PaletteOverride: {fileID: 0}
 --- !u!1 &6286855223614832502
 GameObject:
   m_ObjectHideFlags: 0
@@ -1082,7 +1121,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &9178987477737359088
 Transform:
   m_ObjectHideFlags: 0

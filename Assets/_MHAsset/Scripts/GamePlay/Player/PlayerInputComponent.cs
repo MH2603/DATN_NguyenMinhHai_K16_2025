@@ -11,12 +11,6 @@ namespace MH.Player
         public override void ManualUpdate()
         {
             base.ManualUpdate();
-            
-            if (UnityEngine.Input.GetKeyDown(KeyCode.Escape) &&
-                gameStateSystem.CurrentState == EGameState.Playing)
-            {
-                gameStateSystem.ChangeState(EGameState.Pause);
-            }
         }
     }
 }

@@ -35,6 +35,7 @@ namespace MH.Superliminal
         private Vector3 _handPos => _transform.parent.position;
         private Vector3 _targetPos;
         public Vector3 BoxSize { get; private set; }
+        
         #endregion
 
         #region Entity Lifecycle
@@ -93,11 +94,14 @@ namespace MH.Superliminal
             _intertable.OnInteraction.AddListener(OnInteract);
         }
 
-        private void SetDragState(Transform newParent)
+        private async void SetDragState(Transform newParent)
         {
-            State = InteractableState.OnHand;
+            
             _transform.SetParent(newParent);
             _rb.isKinematic = true;
+
+            await UniTask.Delay(100);
+            State = InteractableState.OnHand;
         }
 
         private void UpdateDragParameters()

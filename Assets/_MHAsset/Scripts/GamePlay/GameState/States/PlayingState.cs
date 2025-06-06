@@ -21,7 +21,11 @@ namespace MH.GameState
 
         public override void OnUpdate()
         {
-            
+            if (UnityEngine.Input.GetKeyDown(KeyCode.Escape) &&
+                _stateMachine.CurrentKey == EGameState.Playing)
+            {
+                _stateMachine.ChangeState(EGameState.Pause);
+            }
         }
     }
 }

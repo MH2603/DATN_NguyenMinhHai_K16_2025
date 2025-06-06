@@ -10,11 +10,12 @@ namespace MH.GameState
     {
         public override async UniTask Initialize()
         {
-            Debug.Log(ServiceLocator.Get<IEventBus>());
-
             var gameStateSystem  = new GameStateSystem();
 
             ServiceLocator.Register<IGameStateSystem>(gameStateSystem);
+            
+            var container = new GameObject("GameStateContainer").AddComponent<GameStateContainer>();
+            container.Init(gameStateSystem);
         }
     }
 }

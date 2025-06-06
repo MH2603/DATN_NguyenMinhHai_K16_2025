@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ef9ddd957c34c3aa5d2754dd37025f4, type: 3}
+  m_Name: Dialog Sequence
+  m_EditorClassIdentifier: 
+  Speaker: The Dotor
+  CharacterDur: 50
+  Sentences:
+  - Duration: 0
+    Content: Alright, welcome to HAUI Lap. You're here to confront your mind's deepest
+      patterns. My job is to guide you, or at least, observe your journey. Don't
+      be alarmed by... anything. Focus on the puzzles, the perspectives. Your session
+      begins now.
+  - Duration: 0
+    Content: 'To move, use W, A, S, D. Look around with your mouse.
+
+      Interact
+      with objects using E.
+
+      Sometimes, simply looking at something will change
+      it. Pay attention to your perspective.'
+  - Duration: 0
+    Content: If you're truly stuck, sometimes the answer is to simply step back and
+      reassess what you're seeing. Finally, let discover our world and find the answer
+      for it.

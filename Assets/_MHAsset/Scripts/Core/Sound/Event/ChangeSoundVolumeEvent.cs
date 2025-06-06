@@ -4,11 +4,21 @@ namespace MH.Sound.Event
 {
     public class ChangeSoundVolumeEvent : IEventContext
     {
-        public float Volume { get; private set; }
+        public float SoundVolume { get; private set; }
         
-        public ChangeSoundVolumeEvent(float volume)
+        public ChangeSoundVolumeEvent(float soundVolume)
         {
-            Volume = volume;
+            SoundVolume = soundVolume;
+        }
+    }
+    
+    public class ChangeMusicVolumeEvent : IEventContext
+    {
+        public float MusicVolume { get; private set; }
+        
+        public ChangeMusicVolumeEvent(float musicVolume)
+        {
+            MusicVolume = musicVolume;
         }
     }
 }

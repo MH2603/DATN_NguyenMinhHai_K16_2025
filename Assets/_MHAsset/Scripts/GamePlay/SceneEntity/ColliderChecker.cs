@@ -5,7 +5,7 @@ using UnityEngine.Events;
 namespace MH
 {
     [RequireComponent(typeof(BoxCollider))]
-    public class GravityButtonComponent : EntityComponent
+    public class ColliderChecker : EntityComponent
     {
         #region Fields
         [SerializeField] private LayerMask _objectLayer;           // Layer mask for detecting objects

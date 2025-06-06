@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ef9ddd957c34c3aa5d2754dd37025f4, type: 3}
+  m_Name: Win
+  m_EditorClassIdentifier: 
+  Speaker: The Doctor
+  CharacterDur: 50
+  Sentences:
+  - Duration: 0
+    Content: "You did it. Against all odds, you made it to the end.\nI watched you
+      stumble, adapt, and rise again \u2014 just like any true explorer of the unknown."
+  - Duration: 0
+    Content: This world... it challenged your perception, bent your logic, and demanded
+      your trust. And yet, you endured.
+  - Duration: 0
+    Content: "I\u2019m proud of you. Not just for finishing... but for the way you
+      saw things no one else could.\nSo take a deep breath. Capture this moment \u2014
+      not with the ViewFinder, but with your heart."
+  - Duration: 0
+    Content: "Where you go from here\u2026 is entirely up to you.\nCongratulations.
+      You\u2019ve completed your journey \u2014 and proven that perspective changes
+      everything."

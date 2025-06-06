@@ -1,4 +1,5 @@
 ﻿using MH.ChapterSystem;
+using MH.DialogSystem;
 using MH.SaveSystem;
 using MH.UISystem;
 using UnityEngine;
@@ -18,6 +19,7 @@ namespace MH.GameState
         {
             //Debug.Log(" On Main Menu State Enter");
 
+            ServiceLocator.Get<IDialogSystem>().ForceCompleteSequence();
             OpenMainMenuWindowAsync();
         }
 
@@ -54,11 +56,13 @@ namespace MH.GameState
         
         private async void OnNewGame()
         {
-            _saveSystem.Clean();
-            _chapterManager.SwithChapter(0);
-            ServiceLocator.Get<IGameStateSystem>().ChangeState(EGameState.Playing);
-           
-            await  WindowLayer.Main.BackAsync();
+            // _saveSystem.Clean();
+            // _chapterManager.SwithChapter(0);
+            // ServiceLocator.Get<IGameStateSystem>().ChangeState(EGameState.Playing);
+            //
+            // await  WindowLayer.Main.BackAsync();
+
+            WindowLayer.Main.ShowAsync<MapSelectionWindow>();
         }
 
         async void OnContinue()

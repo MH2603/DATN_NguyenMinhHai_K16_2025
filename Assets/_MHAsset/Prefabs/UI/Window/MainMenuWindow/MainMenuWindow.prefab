@@ -74,8 +74,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278235135
+  m_fontColor: {r: 1, g: 0.6875392, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -360,7 +360,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.3735848, g: 0.3735848, b: 0.3735848, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -391,7 +391,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 132989579162527027, guid: 7ac71d064e534ac498c04d29cc1eaedf, type: 3}
       propertyPath: m_fontSize
-      value: 71.6
+      value: 72
       objectReference: {fileID: 0}
     - target: {fileID: 132989579162527027, guid: 7ac71d064e534ac498c04d29cc1eaedf, type: 3}
       propertyPath: m_fontStyle
@@ -516,7 +516,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 132989579162527027, guid: 7ac71d064e534ac498c04d29cc1eaedf, type: 3}
       propertyPath: m_fontSize
-      value: 71.6
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 132989579162527027, guid: 7ac71d064e534ac498c04d29cc1eaedf, type: 3}
       propertyPath: m_fontStyle
@@ -529,6 +529,10 @@ PrefabInstance:
     - target: {fileID: 4528882093958836239, guid: 7ac71d064e534ac498c04d29cc1eaedf, type: 3}
       propertyPath: m_Name
       value: ContinueBtn
+      objectReference: {fileID: 0}
+    - target: {fileID: 4528882093958836239, guid: 7ac71d064e534ac498c04d29cc1eaedf, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4731984970594782327, guid: 7ac71d064e534ac498c04d29cc1eaedf, type: 3}
       propertyPath: m_IsActive
@@ -548,7 +552,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4903655567013412429, guid: 7ac71d064e534ac498c04d29cc1eaedf, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4903655567013412429, guid: 7ac71d064e534ac498c04d29cc1eaedf, type: 3}
       propertyPath: m_AnchorMin.x
@@ -556,7 +560,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4903655567013412429, guid: 7ac71d064e534ac498c04d29cc1eaedf, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4903655567013412429, guid: 7ac71d064e534ac498c04d29cc1eaedf, type: 3}
       propertyPath: m_SizeDelta.x
@@ -596,11 +600,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4903655567013412429, guid: 7ac71d064e534ac498c04d29cc1eaedf, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 4903655567013412429, guid: 7ac71d064e534ac498c04d29cc1eaedf, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -290.601
       objectReference: {fileID: 0}
     - target: {fileID: 4903655567013412429, guid: 7ac71d064e534ac498c04d29cc1eaedf, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -649,7 +653,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 132989579162527027, guid: 7ac71d064e534ac498c04d29cc1eaedf, type: 3}
       propertyPath: m_fontSize
-      value: 71.6
+      value: 72
       objectReference: {fileID: 0}
     - target: {fileID: 132989579162527027, guid: 7ac71d064e534ac498c04d29cc1eaedf, type: 3}
       propertyPath: m_fontStyle
@@ -895,7 +899,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 132989579162527027, guid: 7ac71d064e534ac498c04d29cc1eaedf, type: 3}
       propertyPath: m_fontSize
-      value: 71.6
+      value: 72
       objectReference: {fileID: 0}
     - target: {fileID: 132989579162527027, guid: 7ac71d064e534ac498c04d29cc1eaedf, type: 3}
       propertyPath: m_fontStyle

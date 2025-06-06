@@ -10,7 +10,7 @@ namespace MH.GameState
     public class PauseState : BaseGameState
     {
 
-        private IPlayerManager playerManager => ServiceLocator.Get<IPlayerManager>();
+        //private IPlayerManager playerManager => ServiceLocator.Get<IPlayerManager>();
         private ISceneLoader sceneLoader => ServiceLocator.Get<ISceneLoader>();
         
         public PauseState(StateMachine<EGameState> stateMachine) : base(stateMachine)
@@ -22,7 +22,7 @@ namespace MH.GameState
             Time.timeScale = 0;
             Cursor.lockState = CursorLockMode.Confined;
 
-            playerManager.SetLockControl(true);
+            //playerManager.SetLockControl(true);
             
             ShowPauseWindow();
 
@@ -57,7 +57,7 @@ namespace MH.GameState
             Cursor.lockState = CursorLockMode.Locked;
             WindowLayer.Main.BackAsync();
             
-            playerManager.SetLockControl(false);
+            //playerManager.SetLockControl(false);
             
             _stateMachine.ChangeState(EGameState.Playing);
         }
@@ -69,7 +69,9 @@ namespace MH.GameState
             await TransitionLayer.Main.ShowAsync<FadeTransition>();
             await WindowLayer.Main.BackAsync();
             
-            sceneLoader.UnloadSceneAsync("Chapter_01");
+            Debug.Log("OnMainMenu");
+            
+            sceneLoader.UnloadSceneAsync(sceneLoader.SceneHistory[sceneLoader.SceneHistory.Count - 1]);
             
             _stateMachine.ChangeState(EGameState.MainMenu);
         }

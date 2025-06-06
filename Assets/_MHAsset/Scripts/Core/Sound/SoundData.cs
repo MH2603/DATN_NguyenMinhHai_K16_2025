@@ -29,7 +29,7 @@ namespace MH.Sound
         [HideInInspector] 
         public bool bypassEffects;
 
-        // Bỏ qua các hiệu ứng của AudioListener (Volume, Echo,...)
+        // Bỏ qua các hiệu ứng của AudioListener (SoundVolume, Echo,...)
         [HideInInspector] 
         public bool bypassListenerEffects;
 

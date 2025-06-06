@@ -94,7 +94,7 @@ namespace MH.Player
                     InteractableTrans = hit.transform
                 };
 
-                HUDLayer.Main.ShowAsync<InteractHUD>(vm);
+                if(HUDLayer.Main != null)HUDLayer.Main.ShowAsync<InteractHUD>(vm);
 
 #if UNITY_EDITOR
                 DebugDrawer.DrawRay(_trans.position, _trans.forward * detectDst, Color.red, 0.02f); 
@@ -108,7 +108,7 @@ namespace MH.Player
                 }
 
                 _trackingInteractable = null;
-                HUDLayer.Main.HideAsync<InteractHUD>();
+                if(HUDLayer.Main != null)HUDLayer.Main.HideAsync<InteractHUD>();
 
 #if UNITY_EDITOR
                 DebugDrawer.DrawRay(_trans.position, _trans.forward * detectDst, Color.green, 0.02f); 

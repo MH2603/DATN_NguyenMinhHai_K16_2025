@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using SceneManager = UnityEngine.SceneManagement.SceneManager;
 
@@ -7,63 +8,32 @@ namespace MH.SceneLoader
 
     public interface ISceneLoader
     {
-        void LoadScene(string sceneName);
-        void UnloadScene(string sceneName);
-        
-        void LoadSceneAsync(string sceneName);
-        void UnloadSceneAsync(string sceneName);
-        
-        void LoadScene(string sceneName, System.Action onLoaded);
-        void UnloadScene(string sceneName, System.Action onUnloaded);
-        
-        void LoadSceneAsync(string sceneName, System.Action onLoaded);
-        void UnloadSceneAsync(string sceneName, System.Action onUnloaded);
+        List<string> SceneHistory { get; }
+        void LoadSceneAsync(string sceneName, System.Action onLoaded = null, LoadSceneMode mode = LoadSceneMode.Additive);
+        void UnloadSceneAsync(string sceneName, System.Action onUnloaded = null, LoadSceneMode mode = LoadSceneMode.Additive);
     }
     
     public class SceneLoader : ISceneLoader
     {
-        public void LoadScene(string sceneName)
+        public List<string> SceneHistory { get => _sceneHistory; }
+        
+        private List<string> _sceneHistory = new();
+
+        public void LoadSceneAsync(string sceneName, Action onLoaded, LoadSceneMode mode = LoadSceneMode.Additive)
         {
-            SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+            var operation = SceneManager.LoadSceneAsync(sceneName, mode);
+            operation.completed += _ =>
+            {
+                onLoaded?.Invoke();
+                _sceneHistory.Add(sceneName);
+            };
         }
 
-        public void UnloadScene(string sceneName)
-        {
-            SceneManager.UnloadSceneAsync(sceneName);
-        }
-
-        public void LoadSceneAsync(string sceneName)
-        {
-            SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
-        }
-
-        public void UnloadSceneAsync(string sceneName)
-        {
-            SceneManager.UnloadSceneAsync(sceneName);
-        }
-
-        public void LoadScene(string sceneName, Action onLoaded)
-        {
-            SceneManager.LoadScene(sceneName);
-            onLoaded?.Invoke();
-        }
-
-        public void UnloadScene(string sceneName, Action onUnloaded)
-        {
-            SceneManager.UnloadSceneAsync(sceneName);
-            onUnloaded?.Invoke();
-        }
-
-        public void LoadSceneAsync(string sceneName, Action onLoaded)
-        {
-            var operation = SceneManager.LoadSceneAsync(sceneName);
-            operation.completed += _ => onLoaded?.Invoke();
-        }
-
-        public void UnloadSceneAsync(string sceneName, Action onUnloaded)
+        public void UnloadSceneAsync(string sceneName, Action onUnloaded = null, LoadSceneMode mode = LoadSceneMode.Additive)
         {
             var operation = SceneManager.UnloadSceneAsync(sceneName);
             operation.completed += _ => onUnloaded?.Invoke();
         }
+        
     }
 }

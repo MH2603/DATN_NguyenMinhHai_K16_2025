@@ -416,7 +416,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -598, y: 308.3689}
+  m_AnchoredPosition: {x: -598, y: 308.369}
   m_SizeDelta: {x: 1196, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &579100155573479904
@@ -579,8 +579,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6486628288945971169}
   m_HandleRect: {fileID: 152261393399750192}
   m_Direction: 2
-  m_Value: 1.0000001
-  m_Size: 0.61673796
+  m_Value: 1
+  m_Size: 0.61664015
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -726,10 +726,10 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: "My Graduration Project\n\xA9 2025 MinhHai Games\r\n\r\nGame Design & Programming:\r\nSV:
-    Nguy\u1EC5n Minh H\u1EA3i - 2021606253\n\r\nVisuals:\r\n\n\r\nMusic:\r\n\u201CExploration\u201D
-    by Kevin MacLeod (CC BY)\r\n\r\nSpecial Thanks:\r\nThs V\u0169 Minh Y\u1EBFn\nTh\u1EA7y
-    c\xF4 tr\u01B0\u1EDDng CNNT  \nUnity Community\r\nMy Friends and Family\r\n\r\nTools
-    Used:\r\nUnity Engine, TextMeshPro, Photoshop\r\n\r\nThank you for playing!\r\n"
+    Nguy\u1EC5n Minh H\u1EA3i - 2021606253\n\r\nSpecial Thanks:\r\nThs V\u0169 Minh
+    Y\u1EBFn\nTh\u1EA7y c\xF4 tr\u01B0\u1EDDng CNNT v\xE0 truy\u1EC1n th\xF4ng\nUnity
+    Community\r\nMy Friends and Family\r\n\r\nTools Used:\r\nUnity Engine, TextMeshPro,
+    Photoshop\r\n\r\nThank you for playing!\r\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b4d9c8544ca21d34fac10b61cbf407da, type: 2}
   m_sharedMaterial: {fileID: 8984446576883032730, guid: b4d9c8544ca21d34fac10b61cbf407da, type: 2}
@@ -990,14 +990,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.78431374}
+  m_Color: {r: 0.2528302, g: 0.2528302, b: 0.2528302, a: 0.78431374}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 6365010c7e304b04cb526326d267e5cb, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

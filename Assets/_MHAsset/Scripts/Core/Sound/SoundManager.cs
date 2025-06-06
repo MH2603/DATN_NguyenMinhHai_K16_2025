@@ -47,8 +47,8 @@ namespace MH.Sound
 
         #region ---------- Properties ------------
         
-        public float SoundVolume { get; private set; } = 1f; // Volume for sound effects
-        public float MusicVolume { get; private set; } = 1f; // Volume for music
+        public float SoundVolume { get; private set; } = 1f; // SoundVolume for sound effects
+        public float MusicVolume { get; private set; } = 1f; // SoundVolume for music
 
         // Pool that manages the lifecycle of SoundEmitter objects
         private IObjectPool<SoundEmitter> _soundEmitterPool;
@@ -78,6 +78,9 @@ namespace MH.Sound
         public void SetMusicVolume(float volume)
         {
             MusicVolume = volume;
+            
+            var musicEvent = new ChangeMusicVolumeEvent(volume);
+            ServiceLocator.Get<IEventBus>().Send(musicEvent);
         }
         
         public void SetSoundVolume(float volume)

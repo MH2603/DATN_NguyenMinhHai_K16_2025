@@ -7,22 +7,6 @@ using UnityEditor;
 
 namespace MH
 {
-
-    public class MeshData
-    {
-        public Transform Origin;
-        public Mesh Mesh;
-    }
-    
-    public enum PolaroidState
-    {
-        None,
-        HoldPolaroid,
-        AimPolaroid,
-        HoldPhoto,
-        AimPhoto,
-    }
-    
     public class ViewFinderTester : MonoBehaviour
     {
         #region ------------ Fields --------------
@@ -99,8 +83,11 @@ namespace MH
             
             List<Vector3> intersectionPoints = new List<Vector3>();
             
+            // generate new meshes by cutting the original meshes
+            // check one by one the camera planes
             for (int i=0; i < planes.Length; ++i)
             {
+                // for each plane, cut the objects
                 for (int j=0; j < cuttedObjectData.Count; ++j)
                 {
                     Mesh newMesh = MeshCutter.GenerateMesh(cuttedObjectData[j].Mesh, cuttedObjectData[j].Origin, planes[i], false, out intersectionPoints);
@@ -116,21 +103,6 @@ namespace MH
 
             BuildBackgroundQuad();
         }
-
-
-        public void SaveCuttedObjectToPrefab()
-        {
-            SaveAsPrefab(cuttedObjectHolder.gameObject, "Assets/_MHAsset/Prefabs/ViewFinder/CuttedObjects/01.prefab");
-        }
-        
-       
-        public static void SaveAsPrefab(GameObject obj, string path)
-        {
-            // Tạo prefab mới tại đường dẫn trong project
-            PrefabUtility.SaveAsPrefabAssetAndConnect(obj, path, InteractionMode.UserAction);
-        }
-
-            
         
         #endregion
 

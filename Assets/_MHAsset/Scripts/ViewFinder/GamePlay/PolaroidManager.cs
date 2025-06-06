@@ -1,30 +1,39 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace MH.GamePlay
 {
-    public class StaticPolaroidManager : MonoBehaviour
+    public class PolaroidManager : MonoBehaviour
     {
         #region ------------ Fields --------------
 
-        [SerializeField] private Camera polaroidCamera;
-        [SerializeField] private Camera bgCamera;
-        [SerializeField] private RenderTexture bgRenderTexture;
+        public FirstPersonController movementCtrl;
+        public GameObject camAim_Cinema;
         [Space]
-        [SerializeField] private GameObject polaroidObject; 
-        [SerializeField] private GameObject polaroidView;
-        [SerializeField] private GameObject photo;
-        [SerializeField] private MeshFilter bgQuadPrefab;
-        
-        [Header(" ------ Holders ----------")]
-        [SerializeField] private Transform cutableGameObjectParent;
-        [SerializeField] private Transform polaroidHolder;
-        [SerializeField] private Transform polaroidAimPoint;
-        [SerializeField] private Transform photoHolder;
-        [SerializeField] private Transform photoAimPoint;
-        [SerializeField] private Transform cuttedObjectHolder;
+        public Camera playerCamara;
+        public Camera polaroidCamera;
+        public Camera bgCamera;
+        public RenderTexture bgRenderTexture;
+        [Space]
+        public GameObject polaroidObject; 
+        public GameObject polaroidView;
+        public GameObject photo;
+        public MeshFilter bgQuadPrefab;
 
+        [Header(" ------ Holders ----------")]
+        public Transform canCopyRoot;
+        public Transform canRemoveRoot;
+        public Transform polaroidHolder;
+        public Transform polaroidAimPoint;
+        public Transform photoHolder;
+        public Transform photoAimPoint;
+        [FormerlySerializedAs("cuttedObjectHolder")] public Transform cuttedContainer;
+
+        [Header("--------------- Debug ---------------")]
+        public EPolaroidState polaroidState;
+        
         #endregion
 
         #region --------------- Properties ---------------
@@ -32,18 +41,25 @@ namespace MH.GamePlay
         private float _stateTimer;
         [SerializeField] private PolaroidState _currentState;
         
+        private PolaroidStateMachine _polaroidStateMachine;
+        
         #endregion
 
         #region ------------ Unity Methods ------------
 
         private void Start()
         {
-            EnterHoldPolaroidState();
+            _polaroidStateMachine = new PolaroidStateMachine(this);
             
+            //EnterHoldPolaroidState();
         }
 
         public void Update()
         {
+            _polaroidStateMachine.Update();
+            polaroidState = _polaroidStateMachine.CurrentKey;
+            return;
+            
             RunningAimPhotoState();
             RunningHoldPhotoState();
             RunningAimPolaroidState();
@@ -60,11 +76,11 @@ namespace MH.GamePlay
         public void CopyAndPasteSpaceInPolaroidCamView()
         {
             // get cutable objects
-            List<MeshRenderer> cutableMesh = cutableGameObjectParent.GetComponentsInChildren<MeshRenderer>().ToList();
+            List<MeshRenderer> cutableMesh = canCopyRoot.GetComponentsInChildren<MeshRenderer>().ToList();
             List<GameObject> cutableObjects = cutableMesh.Select(mesh => mesh.gameObject).ToList();
             
             // get places which bounds the camera view
-            Plane[] planes = GetCameraViewPlanes(polaroidCamera);
+            Plane[] planes = ViewFinderExtension.GetCameraViewPlanes(polaroidCamera);
             
             // init list of cutted objects
             List<MeshData> cuttedObjectData = new ();
@@ -95,39 +111,88 @@ namespace MH.GamePlay
             for (int i=0; i < cuttedObjectData.Count; ++i)
             {
                 GameObject newObject = MeshCutter.CreateMeshObject(cuttedObjectData[i].Origin.gameObject, cuttedObjectData[i].Mesh,cuttedObjectData[i].Origin.gameObject.name + "_Part" );
-                newObject.transform.SetParent(cuttedObjectHolder);
+                newObject.transform.SetParent(cuttedContainer);
             }
 
             BuildBackgroundQuad();
+        }
+
+        public void ReplaceParentForCuttedOjects()
+        {
+            // get cutable objects
+            List<MeshRenderer> cuttedMeshs = cuttedContainer.GetComponentsInChildren<MeshRenderer>(true).ToList();
+            List<GameObject> cuttedObjects = cuttedMeshs.Select(mesh => mesh.gameObject).ToList();
+            foreach (var cuttedObject in cuttedObjects)
+            {
+                cuttedObject.transform.SetParent(canCopyRoot);
+                cuttedObject.AddComponent<MeshCollider>();
+            }
+        }
+        
+        public void CutAndRemoveSpace()
+        {
+            // get cutable objects
+            List<MeshRenderer> cutableMesh = canRemoveRoot.GetComponentsInChildren<MeshRenderer>().ToList();
+            List<GameObject> cutableObjects = cutableMesh.Select(mesh => mesh.gameObject).ToList();
+            List<GameObject> oldObjects = cutableObjects.ToList();
+            
+            // get places which bounds the camera view
+            Plane[] planes = ViewFinderExtension.GetCameraViewPlanes(playerCamara);
+            
+            // init list of cutted objects
+            List<MeshData> cuttedObjectData = new List<MeshData>();
+            List<MeshData> willGenerateData = new List<MeshData>();
+            
+            // fill the list of cutted objects from cutable Object in scene
+            for (int i=0; i < cutableObjects.Count; ++i)
+            {
+                MeshData meshData = new MeshData();
+                meshData.Mesh = cutableObjects[i].GetComponent<MeshFilter>().mesh;
+                meshData.Origin = cutableObjects[i].transform;
+                cuttedObjectData.Add(meshData);
+            }
+            
+            List<Vector3> intersectionPoints = new List<Vector3>();
+            
+            for (int i=0; i < planes.Length; ++i)
+            {
+                for (int j=0; j < cuttedObjectData.Count; ++j)
+                {
+                    Mesh willShowMesh = MeshCutter.GenerateMesh(cuttedObjectData[j].Mesh, cuttedObjectData[j].Origin, planes[i], true, out intersectionPoints);
+                    MeshData willShowData = new MeshData();
+                    willShowData.Mesh = willShowMesh;
+                    willShowData.Origin = cuttedObjectData[j].Origin;
+                    willGenerateData.Add(willShowData);
+                    
+                    Mesh newMesh = MeshCutter.GenerateMesh(cuttedObjectData[j].Mesh, cuttedObjectData[j].Origin, planes[i], false, out intersectionPoints);
+                    cuttedObjectData[j].Mesh = newMesh;
+                }
+            }
+            
+            foreach (var generateData in willGenerateData)
+            {
+                GameObject newObject = MeshCutter.CreateMeshObject(generateData.Origin.gameObject,generateData.Mesh,generateData.Origin.gameObject.name + "_Positive_Part" );
+                newObject.transform.SetParent(canRemoveRoot);
+                newObject.AddComponent<MeshCollider>();
+            }
+            
+            foreach (var oldObject in oldObjects)
+            {
+                Destroy(oldObject);
+            }
+            
+            
+        }
+        
+        public void EnterCamAimState()
+        {
+            _polaroidStateMachine.ChangeState(EPolaroidState.CamAiming);
         }
         
         #endregion
 
         #region -------- Private Methods -------------
 
-        public Plane[] GetCameraViewPlanes(Camera camera)
-        {
-            
-            Plane[] planes = new Plane[4];
-            Vector3[] frustumCorners = new Vector3[4];
-
-            // Get the frustum corners in world space
-            camera.CalculateFrustumCorners(new Rect(0, 0, 1, 1), camera.farClipPlane, Camera.MonoOrStereoscopicEye.Mono, frustumCorners);
-
-            Vector3 bottomLeft = camera.transform.TransformPoint(frustumCorners[0]);
-            Vector3 topLeft = camera.transform.TransformPoint(frustumCorners[1]);
-            Vector3 topRight = camera.transform.TransformPoint(frustumCorners[2]);
-            Vector3 bottomRight = camera.transform.TransformPoint(frustumCorners[3]);
-
-            // Create planes from the frustum corners
-            planes[0] = new Plane(camera.transform.position, bottomLeft, topLeft); // Left plane
-            planes[1] = new Plane(camera.transform.position, topLeft, topRight); // Top plane
-            planes[2] = new Plane(camera.transform.position, topRight, bottomRight); // Right plane
-            planes[3] = new Plane(camera.transform.position, bottomRight, bottomLeft); // Bottom plane
-
-            return planes;
-        }
-        
         
         private void BuildBackgroundQuad()
         {
@@ -149,7 +214,7 @@ namespace MH.GamePlay
             int mainTexHash = Shader.PropertyToID("_BaseMap");
             bgQuad.GetComponent<MeshRenderer>().material.SetTexture(mainTexHash, text2D);
             
-            bgQuad.transform.SetParent(cuttedObjectHolder);
+            bgQuad.transform.SetParent(cuttedContainer);
         }
         
 
@@ -290,72 +355,7 @@ namespace MH.GamePlay
             }
         }
 
-        private void ReplaceParentForCuttedOjects()
-        {
-            // get cutable objects
-            List<MeshRenderer> cuttedMeshs = cuttedObjectHolder.GetComponentsInChildren<MeshRenderer>(true).ToList();
-            List<GameObject> cuttedObjects = cuttedMeshs.Select(mesh => mesh.gameObject).ToList();
-            foreach (var cuttedObject in cuttedObjects)
-            {
-                cuttedObject.transform.SetParent(cutableGameObjectParent);
-                cuttedObject.AddComponent<MeshCollider>();
-            }
-        }
         
-        private void CutAndRemoveSpace()
-        {
-            // get cutable objects
-            List<MeshRenderer> cutableMesh = cutableGameObjectParent.GetComponentsInChildren<MeshRenderer>().ToList();
-            List<GameObject> cutableObjects = cutableMesh.Select(mesh => mesh.gameObject).ToList();
-            List<GameObject> oldObjects = cutableObjects.ToList();
-            
-            // get places which bounds the camera view
-            Plane[] planes = GetCameraViewPlanes(polaroidCamera);
-            
-            // init list of cutted objects
-            List<MeshData> cuttedObjectData = new List<MeshData>();
-            List<MeshData> willGenerateData = new List<MeshData>();
-            
-            // fill the list of cutted objects from cutable Object in scene
-            for (int i=0; i < cutableObjects.Count; ++i)
-            {
-                MeshData meshData = new MeshData();
-                meshData.Mesh = cutableObjects[i].GetComponent<MeshFilter>().mesh;
-                meshData.Origin = cutableObjects[i].transform;
-                cuttedObjectData.Add(meshData);
-            }
-            
-            List<Vector3> intersectionPoints = new List<Vector3>();
-            
-            for (int i=0; i < planes.Length; ++i)
-            {
-                for (int j=0; j < cuttedObjectData.Count; ++j)
-                {
-                    Mesh willShowMesh = MeshCutter.GenerateMesh(cuttedObjectData[j].Mesh, cuttedObjectData[j].Origin, planes[i], true, out intersectionPoints);
-                    MeshData willShowData = new MeshData();
-                    willShowData.Mesh = willShowMesh;
-                    willShowData.Origin = cuttedObjectData[j].Origin;
-                    willGenerateData.Add(willShowData);
-                    
-                    Mesh newMesh = MeshCutter.GenerateMesh(cuttedObjectData[j].Mesh, cuttedObjectData[j].Origin, planes[i], false, out intersectionPoints);
-                    cuttedObjectData[j].Mesh = newMesh;
-                }
-            }
-            
-            foreach (var generateData in willGenerateData)
-            {
-                GameObject newObject = MeshCutter.CreateMeshObject(generateData.Origin.gameObject,generateData.Mesh,generateData.Origin.gameObject.name + "_Positive_Part" );
-                newObject.transform.SetParent(cutableGameObjectParent);
-                newObject.AddComponent<MeshCollider>();
-            }
-            
-            foreach (var oldObject in oldObjects)
-            {
-                Destroy(oldObject);
-            }
-            
-            
-        }
 
         #endregion
 
